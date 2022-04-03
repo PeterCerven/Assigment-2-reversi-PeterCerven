@@ -1,6 +1,10 @@
 package sk.stuba.fei.uim.oop.game;
 
 import sk.stuba.fei.uim.oop.game.board.Board;
+import sk.stuba.fei.uim.oop.game.board.Menu;
+import sk.stuba.fei.uim.oop.game.board.MyPanel;
+import sk.stuba.fei.uim.oop.game.board.Tile;
+import sk.stuba.fei.uim.oop.utility.Orientation;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -26,27 +30,27 @@ public class Game extends JFrame implements KeyListener, MouseListener {
             System.out.println("uspech");
             e.printStackTrace();
         }
-        this.setSize(500, 500);
+        this.setSize(600, 600);
         this.setTitle("Reversi");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(true);
         this.getContentPane().setBackground(new Color(0x1F7F25));
-        this.setLayout(new GridLayout(5,5, 1, 1));
-        createPanels();
-        createBoardSize(25,5);
+        Board board = new Board(Color.black, 500, 500);
+        Menu menu = new Menu(Color.red, 500, 100);
+        createBoardSize(36,10, board);
+
+
+        this.add(menu,BorderLayout.PAGE_START);
+        this.add(board, BorderLayout.CENTER);
         this.setVisible(true);
 
     }
 
-    private void createPanels(){
-        for(int i = 0; i < 5; i++){
 
-        }
-    }
-
-    private void createBoardSize(int number, int size){
+    private void createBoardSize(int number, int size, Board board){
         for (int i = 0; i < number; i++){
-            this.add(new Board(new Color((i % 2) * 25 ,(i % 2 + 1) * 70,0),0,0, size, size));
+            board.setLayout(new GridLayout(6,6,1,1));
+            board.add(new Tile(new Color((i % 2) * 25 ,(i % 2 + 1) * 70,0),0,0, size));
         }
     }
 

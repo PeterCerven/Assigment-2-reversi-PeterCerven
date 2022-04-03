@@ -1,13 +1,13 @@
 package sk.stuba.fei.uim.oop.game.board;
 
-import javax.swing.*;
 import java.awt.*;
 
-public class Board extends JPanel {
-    public Board(Color color, int x, int y, int width, int height) {
-        super();
+public class Board extends MyPanel {
+    public Board(Color color, int width, int height) {
+        super(color, width, height);
         this.setBackground(color);
-        this.setBounds(x, y, width, height);
-
+        this.setBounds(0, 0, width, height);
     }
+
+
 }
