@@ -97,21 +97,21 @@ B-OOP 2022
 
 Your task is to create a window Java application running the game Reversi using the AWT and Swing libraries. The user interface of the application must consist of:
 
-* Canvas (or JPanel) - that will draw the game board
+* Canvas (or JPanel) - that will draw the game game
 * side menu (you can choose the placement of this menu, it can also be on the top, or at the bottom of the window)
 
 ## Game rules
 ### Starting position and the win condition
 
-The game is also known as Othello. The game starts with a board of 6x6 tiles, the size of the board can be changed by the user (the picture shows a board od size 8x8).
+The game is also known as Othello. The game starts with a game of 6x6 tiles, the size of the game can be changed by the user (the picture shows a game od size 8x8).
 
 ![image](images/reversi.png)
 
-The goal of the game is to have more stones on the board than your opponent. The game ends if all tiles are occupied by stones, or if neither player can play a valid move.
+The goal of the game is to have more stones on the game than your opponent. The game ends if all tiles are occupied by stones, or if neither player can play a valid move.
 
 ### Placing the stones
-The player places a stone of their color onto the board on their turn. The stone must be placed in such a way, that it captures at least one stone of their opponent. If a player cannot capture a stone with any available move, they pass their turn.
-The game begins with 4 stones placed on the board, two stones belong to the white and two stones belong to the black player (see picture above).
+The player places a stone of their color onto the game on their turn. The stone must be placed in such a way, that it captures at least one stone of their opponent. If a player cannot capture a stone with any available move, they pass their turn.
+The game begins with 4 stones placed on the game, two stones belong to the white and two stones belong to the black player (see picture above).
 
 ### Capturing stones
 The players must place stones in such a way, that they trap opposing stones in a continuous line between two stones of their own color in any direction (vertically, horizontally, or diagonally).
@@ -135,8 +135,8 @@ The game is played with the mouse. When a mouse hovers above a tile that is a va
 The menu must contain:
 * information about the current player, or when the game ends, information about the winner.
 * a button that resets the game
-* information about the current dimensions of the board
-* a component that is used to set the size of the game board (out of the valid values 6,8,10,12). You can choose what component to use for this, possible examples include: Slider, JTextField, JComboBox
+* information about the current dimensions of the game
+* a component that is used to set the size of the game game (out of the valid values 6,8,10,12). You can choose what component to use for this, possible examples include: Slider, JTextField, JComboBox
 
 By pressing the R key on the keyboard the game resets. By pressing the ESC key the game closes.
 
