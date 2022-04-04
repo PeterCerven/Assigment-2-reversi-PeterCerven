@@ -1,4 +1,6 @@
-package sk.stuba.fei.uim.oop.game.board;
+package sk.stuba.fei.uim.oop.game.menu;
+
+import sk.stuba.fei.uim.oop.game.board.MyPanel;
 
 import java.awt.*;
 

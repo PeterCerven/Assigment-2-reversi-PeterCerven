@@ -1,23 +1,17 @@
 package sk.stuba.fei.uim.oop.game;
 
 import sk.stuba.fei.uim.oop.game.board.Board;
-import sk.stuba.fei.uim.oop.game.board.Menu;
-import sk.stuba.fei.uim.oop.game.board.MyPanel;
+import sk.stuba.fei.uim.oop.game.menu.Menu;
 import sk.stuba.fei.uim.oop.game.board.Tile;
-import sk.stuba.fei.uim.oop.utility.Orientation;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Objects;
 
-public class Game extends JFrame implements KeyListener, MouseListener {
+public class Game extends JFrame{
     public Game() throws HeadlessException {
         super();
 
@@ -36,11 +30,11 @@ public class Game extends JFrame implements KeyListener, MouseListener {
         this.setResizable(true);
         this.getContentPane().setBackground(new Color(0x1F7F25));
         Board board = new Board(Color.black, 500, 500);
-        Menu menu = new Menu(Color.red, 500, 100);
-        createBoardSize(36,10, board);
+        Menu menu = new Menu(Color.LIGHT_GRAY, 500, 100);
+        createBoardSize(6,10, board);
 
 
-        this.add(menu,BorderLayout.PAGE_START);
+        this.add(menu,BorderLayout.NORTH);
         this.add(board, BorderLayout.CENTER);
         this.setVisible(true);
 
@@ -48,49 +42,12 @@ public class Game extends JFrame implements KeyListener, MouseListener {
 
 
     private void createBoardSize(int number, int size, Board board){
+        board.setLayout(new GridLayout(number,number,1,1));
         for (int i = 0; i < number; i++){
-            board.setLayout(new GridLayout(6,6,1,1));
-            board.add(new Tile(new Color((i % 2) * 25 ,(i % 2 + 1) * 70,0),0,0, size));
+            for (int j = 0; j < number; j++){
+                board.add(new Tile(new Color(((i + j) % 2) * 25 ,((i +j) % 2 + 1) * 70,0),0,0, size));
+            }
         }
     }
 
-    @Override
-    public void keyTyped(KeyEvent e) {
-
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-
-    }
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-
-    }
 }
