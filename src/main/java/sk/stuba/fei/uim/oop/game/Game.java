@@ -14,6 +14,7 @@ import java.util.Objects;
 public class Game extends JFrame{
     public Game() throws HeadlessException {
         super();
+        this.setTitle("Reversi");
 
         BufferedImage pic = null;
         try {
