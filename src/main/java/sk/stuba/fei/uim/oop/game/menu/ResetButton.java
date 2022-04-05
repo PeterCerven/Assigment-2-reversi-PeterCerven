@@ -11,7 +11,7 @@ public class ResetButton extends JButton {
         this.setFont(new Font("Comic Sans", Font.BOLD,25));
         this.setForeground(Color.CYAN);
         this.setBackground(Color.BLACK);
-        this.addActionListener(actionListener);
+        //this.addActionListener(actionListener);
     }
 
 }
