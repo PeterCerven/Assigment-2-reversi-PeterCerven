@@ -15,10 +15,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class Game extends JFrame{
+public class Game extends JFrame {
 
-    public ArrayList<JPanel> valueX = new ArrayList<>();
-    public ArrayList<ArrayList<JPanel>> valueY = new ArrayList<>();
+    public ArrayList<Tile> valueX = new ArrayList<>();
+    public ArrayList<ArrayList<Tile>> valueY = new ArrayList<>();
 
     public Game() throws HeadlessException {
         super();
@@ -26,11 +26,11 @@ public class Game extends JFrame{
         //startGame();
     }
 
-    private void startGame(){
+    private void startGame() {
 
     }
 
-    private void gameCreate(){
+    private void gameCreate() {
         this.setTitle("Reversi");
         this.setSize(600, 600);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -40,56 +40,113 @@ public class Game extends JFrame{
         Board board = new Board(Color.black, 500, 500);
         Menu menu = new Menu(Color.LIGHT_GRAY, 500, 100);
         ResetButton resetButton = new ResetButton();
-        ResizeGame resizeGame = new ResizeGame(Adjustable.HORIZONTAL, 6,12,6);
-
-        createBoardSize(6,10, board, valueX, valueY);
+        ResizeGame resizeGame = new ResizeGame(Adjustable.HORIZONTAL, 6, 12, 6);
+        createBoardSize(6, 10, board, valueX, valueY);
         initialStones(6);
+        createPossibleForBlack();
+        //createPossibleForWhite();
         menu.add(resizeGame);
         menu.add(resetButton);
 
 
-
-
-        this.add(menu,BorderLayout.NORTH);
+        this.add(menu, BorderLayout.NORTH);
         this.add(board, BorderLayout.CENTER);
         this.setVisible(true);
         System.out.println(valueY.get(0).size());
-        System.out.println(6/2-1);
+        System.out.println(6 / 2 - 1);
 
     }
 
-    private void addStone(int x, int y, Color color){
+    private void addStone(int x, int y, Color color) {
         valueY.get(x).get(y).setBackground(color);
     }
 
+    private void createPossibleForBlack() {
+        ArrayList<Point> neighbours = new ArrayList<Point>();
+        for (int i = 0; i < valueY.size(); i++) {
+            for (int j = 0; j < valueY.get(i).size(); j++) {
+                if (valueY.get(i).get(j).getOwnerColor().equals(Color.WHITE)) {
+                    neighbours = findNeighbours(i, j, Color.BLACK);
+                    if (!neighbours.isEmpty()) {
+                        for (Point points : neighbours) {
+                            valueY.get(points.y).get(points.x).setCanditate();
+                        }
+                    }
+                }
+            }
+        }
+    }
 
-    private void initialStones(int size){
-        int a = size/2 - 1;
-        int b = size/2;
+    private ArrayList<Point> findNeighbours(int y, int x, Color color) {
+        ArrayList<Point> grey = new ArrayList<>();
+        int a;
+        int b;
+        for (int rows = -1; rows <= 1; rows++) {
+            for (int columns = -1; columns <= 1; columns++) {
+                if (rows == columns) {
+                    continue;
+                }
+                if (valueY.size() <= (columns + y) || valueY.get(y).size() <= (rows + x)) {
+                    continue;
+                }
+                if (valueY.get(columns + y).get(rows + x).isCanBeTaken()) {
+                    continue;
+                }
+                if (valueY.get(columns + y).get(rows + x).getOwnerColor().equals(Color.BLACK)) {
+                    grey.add(new Point(x - rows, y - columns));
+                    continue;
+                }
+                if (valueY.get(columns + y).get(rows + x).getOwnerColor().equals(Color.WHITE)) {
+                    a = rows;
+                    b = columns;
+                    while (valueY.get(b + y).get(a + x).getOwnerColor().equals(Color.WHITE)){
+                        a++;
+                        b++;
+                    }
+                    if (valueY.get(b + y).get(a + x).getOwnerColor().equals(Color.BLACK)){
+                        grey.add(new Point(x - rows, y - columns));
+                    }
+                }
+            }
+        }
+        return grey;
+    }
 
-        valueY.get(a).get(a).setBackground(Color.BLACK);
-        valueY.get(a).get(b).setBackground(Color.WHITE);
-        valueY.get(b).get(b).setBackground(Color.BLACK);
-        valueY.get(b).get(a).setBackground(Color.WHITE);
+    private void createPossibleForWhite() {
+        for (int i = 0; i < valueY.size(); i++) {
+            for (Tile value : valueY.get(i)) {
+
+            }
+        }
     }
 
 
+    private void initialStones(int size) {
+        int a = size / 2 - 1;
+        int b = size / 2;
 
-    private void createBoardSize(int number, int size, Board board, ArrayList<JPanel> valueX , ArrayList<ArrayList<JPanel>> valueY){
-        board.setLayout(new GridLayout(number,number,1,1));
-        for (int i = 0; i < number; i++){
-            for (int j = 0; j < number; j++){
-                Tile tile = new Tile(new Color(((i + j) % 2) * 25 ,((i +j) % 2 + 1) * 70,0),0,0, size);
+        valueY.get(a).get(a).setTaken(Color.BLACK);
+        valueY.get(a).get(b).setTaken(Color.WHITE);
+        valueY.get(b).get(b).setTaken(Color.BLACK);
+        valueY.get(b).get(a).setTaken(Color.WHITE);
+    }
+
+
+    private void createBoardSize(int number, int size, Board board, ArrayList<Tile> valueX, ArrayList<ArrayList<Tile>> valueY) {
+        board.setLayout(new GridLayout(number, number, 1, 1));
+        for (int i = 0; i < number; i++) {
+            for (int j = 0; j < number; j++) {
+                Tile tile = new Tile(new Color(((i + j) % 2) * 25, ((i + j) % 2 + 1) * 70, 0), 0, 0, size);
                 board.add(tile);
                 valueX.add(tile);
             }
-            ArrayList<JPanel> shallowCopy = new ArrayList<>(valueX);
+            ArrayList<Tile> shallowCopy = new ArrayList<Tile>(valueX);
             valueY.add(shallowCopy);
             valueX.clear();
         }
     }
 
-    private void addImageIcon(){
+    private void addImageIcon() {
         BufferedImage pic = null;
         try {
             pic = ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream("/logo.jpg")));
