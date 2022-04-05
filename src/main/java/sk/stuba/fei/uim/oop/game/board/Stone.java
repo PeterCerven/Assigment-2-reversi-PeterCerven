@@ -11,7 +11,6 @@ public class Stone extends Canvas{
 
     public Stone(Color color) {
         this.color = color;
-        this.setPreferredSize(new Dimension(50, 50));
     }
 
 

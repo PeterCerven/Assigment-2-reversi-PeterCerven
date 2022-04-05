@@ -17,7 +17,8 @@ import java.util.Objects;
 
 public class Game extends JFrame{
 
-    public ArrayList<JPanel> s = new ArrayList<>();
+    public ArrayList<JPanel> valueX = new ArrayList<>();
+    public ArrayList<ArrayList<JPanel>> valueY = new ArrayList<>();
 
     public Game() throws HeadlessException {
         super();
@@ -41,33 +42,50 @@ public class Game extends JFrame{
         ResetButton resetButton = new ResetButton();
         ResizeGame resizeGame = new ResizeGame(Adjustable.HORIZONTAL, 6,12,6);
 
-        createBoardSize(6,10, board, s);
+        createBoardSize(6,10, board, valueX, valueY);
+        initialStones(6);
         menu.add(resizeGame);
         menu.add(resetButton);
-        Stone whiteStone = new Stone(Color.WHITE);
-        Stone blackStone = new Stone(Color.BLACK);
 
-        addStone(3,3,blackStone);
+
 
 
         this.add(menu,BorderLayout.NORTH);
         this.add(board, BorderLayout.CENTER);
         this.setVisible(true);
+        System.out.println(valueY.get(0).size());
+        System.out.println(6/2-1);
+
     }
 
-    private void addStone(int x, int y, Stone stone){
-        s.get(4).add(stone);
+    private void addStone(int x, int y, Color color){
+        valueY.get(x).get(y).setBackground(color);
     }
 
 
-    private void createBoardSize(int number, int size, Board board, ArrayList<JPanel> s){
+    private void initialStones(int size){
+        int a = size/2 - 1;
+        int b = size/2;
+
+        valueY.get(a).get(a).setBackground(Color.BLACK);
+        valueY.get(a).get(b).setBackground(Color.WHITE);
+        valueY.get(b).get(b).setBackground(Color.BLACK);
+        valueY.get(b).get(a).setBackground(Color.WHITE);
+    }
+
+
+
+    private void createBoardSize(int number, int size, Board board, ArrayList<JPanel> valueX , ArrayList<ArrayList<JPanel>> valueY){
         board.setLayout(new GridLayout(number,number,1,1));
         for (int i = 0; i < number; i++){
             for (int j = 0; j < number; j++){
                 Tile tile = new Tile(new Color(((i + j) % 2) * 25 ,((i +j) % 2 + 1) * 70,0),0,0, size);
                 board.add(tile);
-                s.add(tile);
+                valueX.add(tile);
             }
+            ArrayList<JPanel> shallowCopy = new ArrayList<>(valueX);
+            valueY.add(shallowCopy);
+            valueX.clear();
         }
     }
 
