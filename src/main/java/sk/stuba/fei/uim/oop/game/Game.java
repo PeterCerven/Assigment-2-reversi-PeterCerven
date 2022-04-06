@@ -1,7 +1,6 @@
 package sk.stuba.fei.uim.oop.game;
 
 import sk.stuba.fei.uim.oop.game.board.Board;
-import sk.stuba.fei.uim.oop.game.board.Stone;
 import sk.stuba.fei.uim.oop.game.menu.Menu;
 import sk.stuba.fei.uim.oop.game.board.Tile;
 import sk.stuba.fei.uim.oop.game.menu.ResetButton;
@@ -43,8 +42,7 @@ public class Game extends JFrame {
         ResizeGame resizeGame = new ResizeGame(Adjustable.HORIZONTAL, 6, 12, 6);
         createBoardSize(6, 10, board, valueX, valueY);
         initialStones(6);
-        createPossibleForBlack();
-        //createPossibleForWhite();
+        createPossiblePlacements(Color.WHITE, Color.BLACK);
         menu.add(resizeGame);
         menu.add(resetButton);
 
@@ -61,12 +59,12 @@ public class Game extends JFrame {
         valueY.get(x).get(y).setBackground(color);
     }
 
-    private void createPossibleForBlack() {
+    private void createPossiblePlacements(Color myColor, Color enemyColor) {
         ArrayList<Point> neighbours = new ArrayList<Point>();
         for (int i = 0; i < valueY.size(); i++) {
             for (int j = 0; j < valueY.get(i).size(); j++) {
-                if (valueY.get(i).get(j).getOwnerColor().equals(Color.WHITE)) {
-                    neighbours = findNeighbours(i, j, Color.BLACK);
+                if (valueY.get(i).get(j).getOwnerColor().equals(enemyColor)) {
+                    neighbours = findNeighbours(i, j, myColor, enemyColor);
                     if (!neighbours.isEmpty()) {
                         for (Point points : neighbours) {
                             valueY.get(points.y).get(points.x).setCanditate();
@@ -77,7 +75,7 @@ public class Game extends JFrame {
         }
     }
 
-    private ArrayList<Point> findNeighbours(int y, int x, Color color) {
+    private ArrayList<Point> findNeighbours(int y, int x, Color myColor, Color enemyColor) {
         ArrayList<Point> grey = new ArrayList<>();
         int a;
         int b;
@@ -92,18 +90,18 @@ public class Game extends JFrame {
                 if (valueY.get(columns + y).get(rows + x).isCanBeTaken()) {
                     continue;
                 }
-                if (valueY.get(columns + y).get(rows + x).getOwnerColor().equals(Color.BLACK)) {
+                if (valueY.get(columns + y).get(rows + x).getOwnerColor().equals(myColor)) {
                     grey.add(new Point(x - rows, y - columns));
                     continue;
                 }
-                if (valueY.get(columns + y).get(rows + x).getOwnerColor().equals(Color.WHITE)) {
+                if (valueY.get(columns + y).get(rows + x).getOwnerColor().equals(enemyColor)) {
                     a = rows;
                     b = columns;
-                    while (valueY.get(b + y).get(a + x).getOwnerColor().equals(Color.WHITE)){
+                    while (valueY.get(b + y).get(a + x).getOwnerColor().equals(enemyColor)){
                         a++;
                         b++;
                     }
-                    if (valueY.get(b + y).get(a + x).getOwnerColor().equals(Color.BLACK)){
+                    if (valueY.get(b + y).get(a + x).getOwnerColor().equals(myColor)){
                         grey.add(new Point(x - rows, y - columns));
                     }
                 }
@@ -112,13 +110,6 @@ public class Game extends JFrame {
         return grey;
     }
 
-    private void createPossibleForWhite() {
-        for (int i = 0; i < valueY.size(); i++) {
-            for (Tile value : valueY.get(i)) {
-
-            }
-        }
-    }
 
 
     private void initialStones(int size) {
