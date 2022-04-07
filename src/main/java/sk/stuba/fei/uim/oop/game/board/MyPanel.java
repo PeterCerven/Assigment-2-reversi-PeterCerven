@@ -3,7 +3,7 @@ package sk.stuba.fei.uim.oop.game.board;
 import javax.swing.*;
 import java.awt.*;
 
-public abstract class MyPanel extends JPanel {
+public class MyPanel extends JPanel {
     protected Color color;
     protected int x;
     protected int y;

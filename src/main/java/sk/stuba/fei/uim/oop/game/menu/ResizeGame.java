@@ -6,12 +6,11 @@ import java.util.Hashtable;
 public class ResizeGame extends JSlider {
     public ResizeGame(int orientation, int min, int max, int value) {
         super(orientation, min, max, value);
-        this.setPaintLabels(true);
-        this.setOpaque(true);
         this.setMajorTickSpacing(2);
         this.setMinorTickSpacing(2);
-        this.setPaintTicks(true);
         this.snapToTicks(true);
+        this.setPaintTicks(true);
+        this.setPaintLabels(true);
 
 
 
