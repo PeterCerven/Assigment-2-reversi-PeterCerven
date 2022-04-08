@@ -1,5 +1,6 @@
 package sk.stuba.fei.uim.oop.utility;
 
+import sk.stuba.fei.uim.oop.game.GameLogic;
 import sk.stuba.fei.uim.oop.game.board.Tile;
 
 import javax.swing.*;
@@ -12,9 +13,13 @@ public class MyMouseAdapter extends MouseAdapter {
     private Tile tile;
     private Color me;
     private Color enemy;
+    private GameLogic gameLogic;
+    private ArrayList<ArrayList<Tile>> valueY;
 
-    public MyMouseAdapter( Tile tile) {
+    public MyMouseAdapter(Tile tile, ArrayList<ArrayList<Tile>> valueY) {
         this.tile = tile;
+        this.valueY = valueY;
+        this.gameLogic = new GameLogic(valueY);
     }
 
     private Color getEnemyColor(Color me){
@@ -33,9 +38,9 @@ public class MyMouseAdapter extends MouseAdapter {
             tile.setTaken(tile.getToBeOwned());
             me = tile.currentColor;
             enemy = getEnemyColor(me);
-            tile.clearPossiblePlacements();
-            tile.findOppositeColor(enemy, me);
-            tile.createPossiblePlacements(enemy, me);
+            gameLogic.clearPossiblePlacements();
+            gameLogic.findOppositeColor(tile.getYb(), tile.getXb(), enemy, me);
+            gameLogic.createPossiblePlacements(enemy, me);
         }
         System.out.println(tile.currentColor);
         System.out.println(tile.isTaken());

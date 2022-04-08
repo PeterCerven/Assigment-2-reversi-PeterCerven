@@ -12,8 +12,6 @@ public class ResizeGame extends JSlider {
         this.setPaintTicks(true);
         this.setPaintLabels(true);
 
-
-
     }
 
     private void snapToTicks(boolean b) {

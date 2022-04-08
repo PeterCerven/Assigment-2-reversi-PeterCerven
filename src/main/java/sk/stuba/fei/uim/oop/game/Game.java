@@ -18,6 +18,7 @@ public class Game extends JFrame {
 
     private ArrayList<Tile> valueX = new ArrayList<>();
     private ArrayList<ArrayList<Tile>> valueY = new ArrayList<>();
+    private GameLogic gameLogic;
 
     public Game() throws HeadlessException {
         super();
@@ -25,14 +26,15 @@ public class Game extends JFrame {
     }
 
     private void startGame(Color me, Color enemy) {
-        createPossiblePlacements(me, enemy);
+        gameLogic.createPossiblePlacements(me, enemy);
     }
 
     private void gameCreate() {
         createFrame();
         addImageIcon();
-        createObjects();
-        initialStones(6);
+        int size = createObjects();
+        gameLogic = new GameLogic(valueY);
+        initialStones(size);
         startGame(Color.BLACK, Color.WHITE);
         this.setVisible(true);
 
@@ -46,110 +48,19 @@ public class Game extends JFrame {
         this.addImageIcon();
     }
 
-    public void createObjects(){
+    public int createObjects(){
+        int size = 8;
         Board board = new Board(Color.BLACK, 500, 500);
         Menu menu = new Menu(Color.LIGHT_GRAY, 500, 100);
         ResetButton resetButton = new ResetButton();
-        ResizeGame resizeGame = new ResizeGame(Adjustable.HORIZONTAL, 6, 12, 6);
-        createBoardSize(6, 20, board, valueX, valueY);
+        ResizeGame resizeGame = new ResizeGame(Adjustable.HORIZONTAL, 6, 12, size);
+        createBoardSize(size, 50, board, valueX, valueY);
         menu.add(resizeGame);
         menu.add(resetButton);
         this.add(menu, BorderLayout.NORTH);
         this.add(board, BorderLayout.CENTER);
+        return size;
     }
-
-
-    public void createPossiblePlacements(Color myColor, Color enemyColor) {
-        ArrayList<Point> neighbours = new ArrayList<Point>();
-        for (int columns = 0; columns < valueY.size(); columns++) {
-            for (int rows = 0; rows < valueY.get(columns).size(); rows++) {
-                if (valueY.get(columns).get(rows).getCurrentColor().equals(enemyColor)) {
-                    neighbours = findNeighbours(columns, rows, myColor, enemyColor);
-                    if (!neighbours.isEmpty()) {
-                        for (Point points : neighbours) {
-                            valueY.get(points.y).get(points.x).setCandidate(myColor , valueY);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-
-    public ArrayList<Point> findNeighbours(int y, int x, Color myColor, Color enemyColor) {
-        ArrayList<Point> grey = new ArrayList<>();
-        int a;
-        int b;
-        for (int rows = -1; rows <= 1; rows++) {
-            logger:
-            for (int columns = -1; columns <= 1; columns++) {
-                if (rows == 0 && columns == 0) {
-                    continue;
-                }
-                if (!isOnMap(valueY.size(), rows + x, columns + y)) {
-                    continue;
-                }
-                if (valueY.get(columns + y).get(rows +x).isCanBeTaken()) {
-                    continue;
-                }
-                if (valueY.get(columns + y).get(rows +x).getCurrentColor().equals(myColor) && !(valueY.get(y - columns).get(x - rows).getCurrentColor().equals(enemyColor))) {
-                    grey.add(new Point(x - rows, y - columns));
-                    continue;
-                }
-                if (valueY.get(columns + y).get(rows +x).getCurrentColor().equals(enemyColor)) {
-                    a = rows;
-                    b = columns;
-                    while (valueY.get(b + y).get(a + x).getCurrentColor().equals(enemyColor)){
-                        a += rows ;
-                        b += columns;
-                        if (!isOnMap(valueY.size(),b + y,a + x)) {
-                            continue logger;
-                        }
-                    }
-                    if (!isOnMap(valueY.size(),b + y,a + x)) {
-                        break;
-                    }
-                    if (valueY.get(b + y).get(a + x).getCurrentColor().equals(myColor)){
-                        a -= rows;
-                        b -= columns;
-                        while(isOnMap(valueY.size(), a + x, b + y)){
-                            a -= rows;
-                            b -= columns;
-                            if(!isOnMap(valueY.size(), a + x, b + y)){
-                                break;
-                            }
-                            if (!(valueY.get(b + y).get(a + x).isTaken() || valueY.get(b + y).get(a + x).isCanBeTaken())){
-                                grey.add(new Point(a + x, b + y));
-                            } else {
-                                break;
-                            }
-                        }
-                    } if (!(valueY.get(b + y).get(a + x).isCanBeTaken() && valueY.get(b + y).get(a + x).isTaken())) {
-                        int temp_Y = b + y;
-                        int temp_X = a + x;
-                        while (isOnMap(valueY.size(), a + x, b + y)){
-                            if (valueY.get(b + y).get(a + x).getCurrentColor().equals(myColor)){
-                                grey.add(new Point(temp_X, temp_Y));
-                                break;
-                            }
-                            a -= rows;
-                            b -= columns;
-                        }
-                    }
-//
-                }
-            }
-        }
-        return grey;
-    }
-
-    public boolean isOnMap(int size, int x, int y){
-        if (x >= (size) || x < 0 || y >= size || y < 0){
-            return false;
-        }
-        return true;
-    }
-
 
 
     private void initialStones(int size) {
