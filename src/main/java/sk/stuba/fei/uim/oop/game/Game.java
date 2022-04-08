@@ -4,11 +4,14 @@ import sk.stuba.fei.uim.oop.game.board.Board;
 import sk.stuba.fei.uim.oop.game.menu.Menu;
 import sk.stuba.fei.uim.oop.game.board.Tile;
 import sk.stuba.fei.uim.oop.game.menu.ResetButton;
-import sk.stuba.fei.uim.oop.game.menu.ResizeGame;
+import sk.stuba.fei.uim.oop.game.menu.ResizeGameSlider;
+import sk.stuba.fei.uim.oop.utility.MyKeyAdapter;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,6 +22,9 @@ public class Game extends JFrame {
     private ArrayList<Tile> valueX = new ArrayList<>();
     private ArrayList<ArrayList<Tile>> valueY = new ArrayList<>();
     private GameLogic gameLogic;
+    private ResetButton resetButton;
+    private ResizeGameSlider resizeGameSlider;
+    private MyKeyAdapter myKeyAdapter;
 
     public Game() throws HeadlessException {
         super();
@@ -32,6 +38,7 @@ public class Game extends JFrame {
     private void gameCreate() {
         createFrame();
         addImageIcon();
+        addingListeners();
         int size = createObjects();
         gameLogic = new GameLogic(valueY);
         initialStones(size);
@@ -52,14 +59,19 @@ public class Game extends JFrame {
         int size = 8;
         Board board = new Board(Color.BLACK, 500, 500);
         Menu menu = new Menu(Color.LIGHT_GRAY, 500, 100);
-        ResetButton resetButton = new ResetButton();
-        ResizeGame resizeGame = new ResizeGame(Adjustable.HORIZONTAL, 6, 12, size);
         createBoardSize(size, 50, board, valueX, valueY);
-        menu.add(resizeGame);
+        menu.add(resizeGameSlider);
         menu.add(resetButton);
         this.add(menu, BorderLayout.NORTH);
         this.add(board, BorderLayout.CENTER);
         return size;
+    }
+
+    private void addingListeners(){
+        this.resetButton = new ResetButton();
+        this.resizeGameSlider = new ResizeGameSlider(Adjustable.HORIZONTAL, 6, 12, 6);
+        this.myKeyAdapter = new MyKeyAdapter();
+        this.addKeyListener(myKeyAdapter);
     }
 
 

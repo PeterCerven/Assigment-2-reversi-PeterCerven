@@ -1,10 +1,9 @@
 package sk.stuba.fei.uim.oop.game.menu;
 
 import javax.swing.*;
-import java.util.Hashtable;
 
-public class ResizeGame extends JSlider {
-    public ResizeGame(int orientation, int min, int max, int value) {
+public class ResizeGameSlider extends JSlider {
+    public ResizeGameSlider(int orientation, int min, int max, int value) {
         super(orientation, min, max, value);
         this.setMajorTickSpacing(2);
         this.setMinorTickSpacing(2);
@@ -20,7 +19,8 @@ public class ResizeGame extends JSlider {
     @Override
     protected void fireStateChanged() {
         super.fireStateChanged();
-    }
 
+        System.out.println("sdaf " + this.getValue());
+    }
 
 }
