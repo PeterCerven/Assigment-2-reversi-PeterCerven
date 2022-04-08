@@ -10,23 +10,35 @@ import java.util.ArrayList;
 
 public class MyMouseAdapter extends MouseAdapter {
     private Tile tile;
+    private Color me;
+    private Color enemy;
 
     public MyMouseAdapter( Tile tile) {
         this.tile = tile;
     }
 
-
+    private Color getEnemyColor(Color me){
+        if (me.equals(Color.WHITE)){
+            return Color.BLACK;
+        } else {
+            return Color.WHITE;
+        }
+    }
 
 
 
     @Override
     public void mouseClicked(MouseEvent e) {
         if(tile.isCanBeTaken()){
-            tile.setBackground(tile.getToBeOwned());
-            tile.setCanBeTaken(false);
+            tile.setTaken(tile.getToBeOwned());
+            me = tile.currentColor;
+            enemy = getEnemyColor(me);
             tile.clearPossiblePlacements();
-            tile.findOppositeColor(Color.BLACK ,Color.WHITE);
+            tile.findOppositeColor(enemy, me);
+            tile.createPossiblePlacements(enemy, me);
         }
+        System.out.println(tile.currentColor);
+        System.out.println(tile.isTaken());
     }
 
     @Override
