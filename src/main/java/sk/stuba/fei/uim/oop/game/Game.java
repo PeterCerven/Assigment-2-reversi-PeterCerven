@@ -33,7 +33,7 @@ public class Game extends JFrame {
         addImageIcon();
         createObjects();
         initialStones(6);
-        startGame(Color.WHITE, Color.BLACK);
+        startGame(Color.BLACK, Color.WHITE);
         this.setVisible(true);
 
     }
@@ -156,10 +156,10 @@ public class Game extends JFrame {
         int a = size / 2 - 1;
         int b = size / 2;
 
-        valueY.get(a).get(a).setTaken(Color.BLACK);
-        valueY.get(a).get(b).setTaken(Color.WHITE);
-        valueY.get(b).get(b).setTaken(Color.BLACK);
-        valueY.get(b).get(a).setTaken(Color.WHITE);
+        valueY.get(a).get(a).setTaken(Color.WHITE);
+        valueY.get(a).get(b).setTaken(Color.BLACK);
+        valueY.get(b).get(b).setTaken(Color.WHITE);
+        valueY.get(b).get(a).setTaken(Color.BLACK);
     }
 
 

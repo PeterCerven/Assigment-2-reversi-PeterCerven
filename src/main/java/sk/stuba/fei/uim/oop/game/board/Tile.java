@@ -138,58 +138,6 @@ public class Tile extends JPanel {
     }
 
 
-//    public ArrayList<Point> findNeighbours(int y, int x, Color myColor, Color enemyColor) {
-//        int tempX;
-//        int tempY;
-//        int tempRow;
-//        int tempColumn;
-//        ArrayList<Point> grey = new ArrayList<>();
-//        for (int rows = -1; rows <= 1; rows++) {
-//            INNER:
-//            for (int columns = -1; columns <= 1; columns++) {
-//                tempX = rows;
-//                tempY = columns;
-//                if (rows == 0 && columns == 0) {
-//                    continue;
-//                }
-//                if (!isOnMap(valueY.size(), rows + x, columns + y)) {
-//                    continue;
-//                }
-//                do {
-//                    if (valueY.get(columns + y).get(rows + x).getCurrentColor().equals(myColor)){
-//                        rows -= tempX;
-//                        columns -= tempY;
-//                        while(valueY.get(columns + y).get(rows + x).getCurrentColor().equals(enemyColor)){
-//                            rows -= tempX;
-//                            columns -= tempY;
-//                        }
-//                        if (!(valueY.get(columns + y).get(rows + x).isTaken())){
-//                            grey.add(new Point(rows + x, columns + y));
-//                            continue INNER;
-//                        }
-//
-//                    }
-//                    if (!(valueY.get(columns + y).get(rows + x).isTaken())){
-//                        int candidateX = rows + x;
-//                        int candidateY = columns + y;
-//                        rows -= tempX;
-//                        columns -= tempY;
-//                        while(valueY.get(columns + y).get(rows + x).getCurrentColor().equals(enemyColor)){
-//                            rows -= tempX;
-//                            columns -= tempY;
-//                        }
-//                        if (valueY.get(columns + y).get(rows + x).getCurrentColor().equals(myColor)){
-//                            grey.add(new Point(candidateX, candidateY));
-//                            continue INNER;
-//                        }
-//                    }
-//                    rows += tempX;
-//                    columns += tempY;
-//                } while (valueY.get(columns + y).get(rows + x).getCurrentColor().equals(enemyColor));
-//            }
-//        }
-//        return grey;
-//    }
 
     public boolean isOnMap(int size, int x, int y){
         if (x >= (size) || x < 0 || y >= size || y < 0){
@@ -203,15 +151,15 @@ public class Tile extends JPanel {
         int b;
         for (int rows = -1; rows <= 1; rows++) {
             for (int columns = -1; columns <= 1; columns++) {
-                if (rows == columns) {
+                a = rows;
+                b = columns;
+                if (rows == 0 && columns == 0) {
                     continue;
                 }
-                if (!isOnMap(valueY.size(),rows + xb,columns + yb)) {
-                    break;
+                if (!isOnMap(valueY.size(),a + xb,b + yb)) {
+                    continue;
                 }
-                if (valueY.get(columns + yb).get(rows + xb).getCurrentColor().equals(enemyColor)) {
-                    a = rows;
-                    b = columns;
+                if (valueY.get(b + yb).get(a + xb).getCurrentColor().equals(enemyColor)) {
                     while (valueY.get(b + yb).get(a + xb).getCurrentColor().equals(enemyColor)) {
                         a += rows;
                         b += columns;
