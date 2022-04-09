@@ -23,7 +23,7 @@ import java.util.Objects;
 
 
 @Getter
-public class Game extends JFrame implements ActionListener, KeyListener {
+public class Game extends JFrame implements ActionListener {
 
     private ArrayList<Tile> valueX = new ArrayList<>();
     private ArrayList<ArrayList<Tile>> valueY = new ArrayList<>();
@@ -90,9 +90,10 @@ public class Game extends JFrame implements ActionListener, KeyListener {
         this.resetButton = new ResetButton(this);
         String[] sizes = {"6x6","8x8","10x10","12x12"};
         this.resizeGameComboBox = new ResizeGameComboBox(sizes, "name");
-        resizeGameComboBox.addActionListener(this);
-        this.myKeyAdapter = new MyKeyAdapter();
+        this.resizeGameComboBox.addActionListener(this);
+        this.myKeyAdapter = new MyKeyAdapter(this);
         this.addKeyListener(myKeyAdapter);
+        this.setFocusable(true);
     }
 
 
@@ -161,24 +162,8 @@ public class Game extends JFrame implements ActionListener, KeyListener {
                     restartGame(12);
                     break;
             }
+            resizeGameComboBox.setFocusable(false);
         }
     }
 
-    @Override
-    public void keyTyped(KeyEvent e) {
-        if (e.getKeyChar() == 'r'){
-            restartGame(this.currentSize);
-            System.out.println("lol");
-        }
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-
-    }
 }
