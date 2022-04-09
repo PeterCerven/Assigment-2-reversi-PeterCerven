@@ -1,15 +1,27 @@
 package sk.stuba.fei.uim.oop.game;
 
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import sk.stuba.fei.uim.oop.game.board.Tile;
+import sk.stuba.fei.uim.oop.game.menu.StoneCountText;
+
 
 import java.awt.*;
 import java.util.ArrayList;
-
+@Getter
+@Setter
 public class GameLogic {
     private ArrayList<ArrayList<Tile>> valueY;
+    private StoneCountText blackCount;
+    private StoneCountText whiteCount;
+    private StoneCountText otherCount;
 
-    public GameLogic(ArrayList<ArrayList<Tile>> valueY) {
+    public GameLogic(ArrayList<ArrayList<Tile>> valueY , StoneCountText blackCount, StoneCountText whiteCount, StoneCountText otherCount) {
         this.valueY = valueY;
+        this.blackCount = blackCount;
+        this.whiteCount = whiteCount;
+        this.otherCount = otherCount;
     }
 
     public void clearPossiblePlacements() {
@@ -22,21 +34,43 @@ public class GameLogic {
             }
         }
     }
-    public void createPossiblePlacements(Color myColor, Color enemyColor) {
-        ArrayList<Point> neighbours;
+    public void createPossiblePlacements(Color myColor, Color enemyColor, boolean whiteCheck, boolean blackCheck) {
+        ArrayList<Point> neighbours = new ArrayList<>();
+        boolean check = false;
         for (int i = 0; i < valueY.size(); i++) {
             for (int j = 0; j < valueY.get(i).size(); j++) {
                 if (valueY.get(i).get(j).getCurrentColor().equals(enemyColor)) {
                     neighbours = findNeighbours(i, j, myColor, enemyColor);
                     if (!neighbours.isEmpty()) {
+                        check = true;
+                        if (myColor.equals(Color.WHITE)) {
+                            whiteCheck = true;
+                        }
+                        if (myColor.equals(Color.BLACK)) {
+                            blackCheck = true;
+                        }
                         for (Point points : neighbours) {
-                            valueY.get(points.y).get(points.x).setCandidate(myColor , valueY);
+                            valueY.get(points.y).get(points.x).setCandidate(myColor);
                         }
                     }
                 }
             }
         }
+        if (!check) {
+            if (myColor.equals(Color.WHITE)) {
+                whiteCheck = false;
+            }
+            if (myColor.equals(Color.BLACK)) {
+                blackCheck = false;
+            }
+            if (!whiteCheck && !blackCheck) {
+                System.out.println("The winner is John Cena tttttt");
+                System.exit(0);
+            }
+            createPossiblePlacements(enemyColor, myColor, whiteCheck, blackCheck);
+        }
     }
+
     public  ArrayList<Point> findNeighbours(int y, int x, Color myColor, Color enemyColor) {
         int tempX;
         int tempY;
@@ -101,6 +135,52 @@ public class GameLogic {
         return grey;
     }
 
+    public int getWhiteNumbers(){
+        int count = 0;
+        System.out.println("---------------------------------------------------------");
+        for (ArrayList<Tile> tiles : valueY) {
+            System.out.println();
+            for (Tile tile: tiles ) {
+                System.out.println(tile.currentColor + " [" + tile.getXb() +"]" +  "[" +tile.getYb() + "]");
+                if (tile.isTaken() && tile.currentColor.equals(Color.WHITE)){
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+    public void justColors(){
+        new Color(0,70,0);
+        new Color(25,140,0);
+        new Color(255,255,255);
+        new Color(0,0,0);
+    }
+
+    public int getOtherNumbers(){
+        int count = 0;
+        for (ArrayList<Tile> tiles : valueY) {
+            for (Tile tile: tiles ) {
+                if (!tile.isTaken()){
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+    public int getBlackNumbers(){
+        int count = 0;
+        for (ArrayList<Tile> tiles : valueY) {
+            for (Tile tile: tiles ) {
+                if (tile.isTaken() && tile.currentColor.equals(Color.BLACK)){
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
 
 
     public boolean isOnMap(int size, int x, int y){
@@ -135,18 +215,17 @@ public class GameLogic {
                     }
                     if (valueY.get(b + yb).get(a + xb).getCurrentColor().equals(myColor)) {
                         while (a != rows || b != columns){
-                            valueY.get(b + yb).get(a + xb).setBackground(myColor);
-                            valueY.get(b + yb).get(a + xb).setCurrentColor(myColor);
-                            valueY.get(b + yb).get(a + xb).setToBeOwned(myColor);
+                            valueY.get(b + yb).get(a + xb).setTaken(myColor);
                             a -= rows;
                             b -= columns;
                         }
-                        valueY.get(b + yb).get(a + xb).setBackground(myColor);
-                        valueY.get(b + yb).get(a + xb).setCurrentColor(myColor);
-                        valueY.get(b + yb).get(a + xb).setToBeOwned(myColor);
+                        valueY.get(b + yb).get(a + xb).setTaken(myColor);
                     }
                 }
             }
         }
+        blackCount.ChangeNumberStone(getBlackNumbers(),"Black");
+        whiteCount.ChangeNumberStone(getWhiteNumbers(),"White");
+        otherCount.ChangeNumberStone(getOtherNumbers(),"Change");
     }
 }

@@ -5,6 +5,7 @@ import sk.stuba.fei.uim.oop.game.menu.Menu;
 import sk.stuba.fei.uim.oop.game.board.Tile;
 import sk.stuba.fei.uim.oop.game.menu.ResetButton;
 import sk.stuba.fei.uim.oop.game.menu.ResizeGameSlider;
+import sk.stuba.fei.uim.oop.game.menu.StoneCountText;
 import sk.stuba.fei.uim.oop.utility.MyKeyAdapter;
 
 import javax.imageio.ImageIO;
@@ -17,6 +18,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 
+
+
 public class Game extends JFrame {
 
     private ArrayList<Tile> valueX = new ArrayList<>();
@@ -25,6 +28,9 @@ public class Game extends JFrame {
     private ResetButton resetButton;
     private ResizeGameSlider resizeGameSlider;
     private MyKeyAdapter myKeyAdapter;
+    private StoneCountText blackCount;
+    private StoneCountText whiteCount;
+    private StoneCountText otherCount;
 
     public Game() throws HeadlessException {
         super();
@@ -32,7 +38,7 @@ public class Game extends JFrame {
     }
 
     private void startGame(Color me, Color enemy) {
-        gameLogic.createPossiblePlacements(me, enemy);
+        gameLogic.createPossiblePlacements(me, enemy, true, true);
     }
 
     private void gameCreate() {
@@ -40,8 +46,6 @@ public class Game extends JFrame {
         addImageIcon();
         addingListeners();
         int size = createObjects();
-        gameLogic = new GameLogic(valueY);
-        initialStones(size);
         startGame(Color.BLACK, Color.WHITE);
         this.setVisible(true);
 
@@ -55,13 +59,25 @@ public class Game extends JFrame {
         this.addImageIcon();
     }
 
+    public void createCounters(){
+        blackCount = new StoneCountText("Black is:", 2);
+        whiteCount = new StoneCountText("White is:", 2);
+        otherCount = new StoneCountText("Other is:", 0);
+    }
+
     public int createObjects(){
-        int size = 8;
+        int size = 6;
         Board board = new Board(Color.BLACK, 500, 500);
         Menu menu = new Menu(Color.LIGHT_GRAY, 500, 100);
+        createCounters();
+        gameLogic = new GameLogic(valueY, blackCount, whiteCount, otherCount);
         createBoardSize(size, 50, board, valueX, valueY);
+        initialStones(size);
         menu.add(resizeGameSlider);
         menu.add(resetButton);
+        menu.add(blackCount);
+        menu.add(whiteCount);
+        menu.add(otherCount);
         this.add(menu, BorderLayout.NORTH);
         this.add(board, BorderLayout.CENTER);
         return size;
@@ -90,7 +106,7 @@ public class Game extends JFrame {
         board.setLayout(new GridLayout(number, number, 1, 1));
         for (int i = 0; i < number; i++) {
             for (int j = 0; j < number; j++) {
-                Tile tile = new Tile(new Color(((i + j) % 2) * 25, ((i + j) % 2 + 1) * 70, 0), size, j, i, valueY);
+                Tile tile = new Tile(new Color(((i + j) % 2) * 25, ((i + j) % 2 + 1) * 70, 0), size, j, i, valueY, this.gameLogic);
                 board.add(tile);
                 valueX.add(tile);
             }
