@@ -64,10 +64,14 @@ public class GameLogic {
                 blackCheck = false;
             }
             if (!whiteCheck && !blackCheck) {
-                System.out.println("The winner is John Cena tttttt");
-                System.exit(0);
+                if (getWhiteNumbers() > getBlackNumbers()){
+                    System.out.println("White won");
+                } else {
+                    System.out.println("Black won");
+                }
+            } else {
+                createPossiblePlacements(enemyColor, myColor, whiteCheck, blackCheck);
             }
-            createPossiblePlacements(enemyColor, myColor, whiteCheck, blackCheck);
         }
     }
 
@@ -150,12 +154,6 @@ public class GameLogic {
         return count;
     }
 
-    public void justColors(){
-        new Color(0,70,0);
-        new Color(25,140,0);
-        new Color(255,255,255);
-        new Color(0,0,0);
-    }
 
     public int getOtherNumbers(){
         int count = 0;

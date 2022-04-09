@@ -5,7 +5,7 @@ import lombok.Data;
 import javax.swing.*;
 import java.awt.*;
 
-@Data
+
 public class StoneCountText extends JLabel {
     private int countStone;
 
