@@ -6,7 +6,6 @@ import sk.stuba.fei.uim.oop.game.board.Tile;
 import sk.stuba.fei.uim.oop.game.menu.ResetButton;
 import sk.stuba.fei.uim.oop.game.menu.ResizeGameComboBox;
 import sk.stuba.fei.uim.oop.game.menu.StoneCountText;
-import sk.stuba.fei.uim.oop.utility.MyKeyAdapter;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -33,24 +32,33 @@ public class Game extends JFrame implements ActionListener, KeyListener {
     private StoneCountText blackCount;
     private StoneCountText whiteCount;
     private int size = 6;
+    private Board board;
+    private Menu menu;
 
 
     public Game() throws HeadlessException {
         super();
-        gameCreate(this.size);
+        gameCreate();
     }
 
     private void startGame(Color me, Color enemy) {
+
         gameLogic.createPossiblePlacements(me, enemy, true, true);
     }
 
-    private void gameCreate(int size) {
-
-
+    private void gameCreate() {
         createFrame();
         addImageIcon();
         addingListeners();
-        createObjects(size);
+        menu = new Menu(Color.LIGHT_GRAY, 500, 100);
+        createCounters();
+        gameLogic = new GameLogic(valueY, blackCount, whiteCount);
+        menu.add(resizeGameComboBox);
+        menu.add(resetButton);
+        menu.add(blackCount);
+        menu.add(whiteCount);
+        this.add(menu, BorderLayout.NORTH);
+        createBoard(size);
         startGame(Color.BLACK, Color.WHITE);
         this.setVisible(true);
 
@@ -69,18 +77,10 @@ public class Game extends JFrame implements ActionListener, KeyListener {
         whiteCount = new StoneCountText("White is:", 2);
     }
 
-    public void createObjects(int size){
-        Board board = new Board(Color.BLACK, 500, 500);
-        Menu menu = new Menu(Color.LIGHT_GRAY, 500, 100);
-        createCounters();
-        gameLogic = new GameLogic(valueY, blackCount, whiteCount);
+    public void createBoard(int size){
+        this.board = new Board(Color.BLACK, 500, 500);
         createBoardSize(size, 50, board, valueX, valueY);
         initialStones(size);
-        menu.add(resizeGameComboBox);
-        menu.add(resetButton);
-        menu.add(blackCount);
-        menu.add(whiteCount);
-        this.add(menu, BorderLayout.NORTH);
         this.add(board, BorderLayout.CENTER);
     }
 
@@ -132,8 +132,15 @@ public class Game extends JFrame implements ActionListener, KeyListener {
     }
 
     public void restartGame(int size){
-
-        gameCreate(size);
+        this.size = size;
+        this.remove(board);
+        this.valueY.clear();
+        this.valueX.clear();
+        createBoard(size);
+        createCounters();
+        gameLogic = new GameLogic(valueY, blackCount, whiteCount);
+        startGame(Color.BLACK, Color.WHITE);
+        this.setVisible(true);
     }
 
     @Override
@@ -153,7 +160,6 @@ public class Game extends JFrame implements ActionListener, KeyListener {
                     restartGame(12);
                     break;
             }
-            resizeGameComboBox.setFocusable(false);
         }
     }
 

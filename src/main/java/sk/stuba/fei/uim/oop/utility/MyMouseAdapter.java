@@ -46,8 +46,8 @@ public class MyMouseAdapter extends MouseAdapter {
             gameLogic.findOppositeColor(tile.getYb(), tile.getXb(), enemy, me);
             gameLogic.createPossiblePlacements(enemy, me, true, true);
         }
-//        System.out.println(tile.currentColor);
-//        System.out.println(tile.isTaken());
+        System.out.println(tile.currentColor);
+        System.out.println(tile.isTaken());
     }
 
     @Override
