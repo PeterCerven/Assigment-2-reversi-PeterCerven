@@ -1,11 +1,13 @@
 package sk.stuba.fei.uim.oop.game;
 
+import lombok.Getter;
 import sk.stuba.fei.uim.oop.game.board.Board;
 import sk.stuba.fei.uim.oop.game.menu.Menu;
 import sk.stuba.fei.uim.oop.game.board.Tile;
 import sk.stuba.fei.uim.oop.game.menu.ResetButton;
 import sk.stuba.fei.uim.oop.game.menu.ResizeGameComboBox;
 import sk.stuba.fei.uim.oop.game.menu.StoneCountText;
+import sk.stuba.fei.uim.oop.utility.MyKeyAdapter;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -20,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 
-
+@Getter
 public class Game extends JFrame implements ActionListener, KeyListener {
 
     private ArrayList<Tile> valueX = new ArrayList<>();
@@ -28,10 +30,10 @@ public class Game extends JFrame implements ActionListener, KeyListener {
     private GameLogic gameLogic;
     private ResetButton resetButton;
     private ResizeGameComboBox resizeGameComboBox;
-//    private MyKeyAdapter myKeyAdapter;
+    private MyKeyAdapter myKeyAdapter;
     private StoneCountText blackCount;
     private StoneCountText whiteCount;
-    private int size = 6;
+    private int currentSize = 6;
     private Board board;
     private Menu menu;
 
@@ -58,7 +60,7 @@ public class Game extends JFrame implements ActionListener, KeyListener {
         menu.add(blackCount);
         menu.add(whiteCount);
         this.add(menu, BorderLayout.NORTH);
-        createBoard(size);
+        createBoard(currentSize);
         startGame(Color.BLACK, Color.WHITE);
         this.setVisible(true);
 
@@ -73,8 +75,8 @@ public class Game extends JFrame implements ActionListener, KeyListener {
     }
 
     public void createCounters(){
-        blackCount = new StoneCountText("Black is:", 2);
-        whiteCount = new StoneCountText("White is:", 2);
+        this.blackCount = new StoneCountText("Black is:", 2);
+        this.whiteCount = new StoneCountText("White is:", 2);
     }
 
     public void createBoard(int size){
@@ -85,12 +87,12 @@ public class Game extends JFrame implements ActionListener, KeyListener {
     }
 
     private void addingListeners(){
-        this.resetButton = new ResetButton();
+        this.resetButton = new ResetButton(this);
         String[] sizes = {"6x6","8x8","10x10","12x12"};
         this.resizeGameComboBox = new ResizeGameComboBox(sizes, "name");
         resizeGameComboBox.addActionListener(this);
-//        this.myKeyAdapter = new MyKeyAdapter();
-//        this.addKeyListener(myKeyAdapter);
+        this.myKeyAdapter = new MyKeyAdapter();
+        this.addKeyListener(myKeyAdapter);
     }
 
 
@@ -126,19 +128,18 @@ public class Game extends JFrame implements ActionListener, KeyListener {
             ImageIcon icon = new ImageIcon(pic);
             this.setIconImage(pic);
         } catch (IOException | NullPointerException e) {
-            System.out.println("uspech");
             e.printStackTrace();
         }
     }
 
     public void restartGame(int size){
-        this.size = size;
+        this.currentSize = size;
         this.remove(board);
         this.valueY.clear();
         this.valueX.clear();
         createBoard(size);
-        createCounters();
-        gameLogic = new GameLogic(valueY, blackCount, whiteCount);
+        this.blackCount.ChangeNumberStone(2, "Black is:");
+        this.whiteCount.ChangeNumberStone(2, "White is:");
         startGame(Color.BLACK, Color.WHITE);
         this.setVisible(true);
     }
@@ -166,7 +167,7 @@ public class Game extends JFrame implements ActionListener, KeyListener {
     @Override
     public void keyTyped(KeyEvent e) {
         if (e.getKeyChar() == 'r'){
-            restartGame(this.size);
+            restartGame(this.currentSize);
             System.out.println("lol");
         }
     }
