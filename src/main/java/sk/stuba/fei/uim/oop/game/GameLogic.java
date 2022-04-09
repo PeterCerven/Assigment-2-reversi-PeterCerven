@@ -15,13 +15,13 @@ public class GameLogic {
     private ArrayList<ArrayList<Tile>> valueY;
     private StoneCountText blackCount;
     private StoneCountText whiteCount;
-    private StoneCountText otherCount;
 
-    public GameLogic(ArrayList<ArrayList<Tile>> valueY , StoneCountText blackCount, StoneCountText whiteCount, StoneCountText otherCount) {
+
+    public GameLogic(ArrayList<ArrayList<Tile>> valueY , StoneCountText blackCount, StoneCountText whiteCount) {
         this.valueY = valueY;
         this.blackCount = blackCount;
         this.whiteCount = whiteCount;
-        this.otherCount = otherCount;
+
     }
 
     public void clearPossiblePlacements() {
@@ -141,11 +141,8 @@ public class GameLogic {
 
     public int getWhiteNumbers(){
         int count = 0;
-        System.out.println("---------------------------------------------------------");
         for (ArrayList<Tile> tiles : valueY) {
-            System.out.println();
             for (Tile tile: tiles ) {
-                System.out.println(tile.currentColor + " [" + tile.getXb() +"]" +  "[" +tile.getYb() + "]");
                 if (tile.isTaken() && tile.currentColor.equals(Color.WHITE)){
                     count++;
                 }
@@ -155,17 +152,6 @@ public class GameLogic {
     }
 
 
-    public int getOtherNumbers(){
-        int count = 0;
-        for (ArrayList<Tile> tiles : valueY) {
-            for (Tile tile: tiles ) {
-                if (!tile.isTaken()){
-                    count++;
-                }
-            }
-        }
-        return count;
-    }
 
     public int getBlackNumbers(){
         int count = 0;
@@ -224,6 +210,5 @@ public class GameLogic {
         }
         blackCount.ChangeNumberStone(getBlackNumbers(),"Black");
         whiteCount.ChangeNumberStone(getWhiteNumbers(),"White");
-        otherCount.ChangeNumberStone(getOtherNumbers(),"Change");
     }
 }

@@ -4,7 +4,7 @@ import sk.stuba.fei.uim.oop.game.board.Board;
 import sk.stuba.fei.uim.oop.game.menu.Menu;
 import sk.stuba.fei.uim.oop.game.board.Tile;
 import sk.stuba.fei.uim.oop.game.menu.ResetButton;
-import sk.stuba.fei.uim.oop.game.menu.ResizeGameSlider;
+import sk.stuba.fei.uim.oop.game.menu.ResizeGameComboBox;
 import sk.stuba.fei.uim.oop.game.menu.StoneCountText;
 import sk.stuba.fei.uim.oop.utility.MyKeyAdapter;
 
@@ -13,6 +13,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,32 +22,35 @@ import java.util.Objects;
 
 
 
-public class Game extends JFrame {
+public class Game extends JFrame implements ActionListener, KeyListener {
 
     private ArrayList<Tile> valueX = new ArrayList<>();
     private ArrayList<ArrayList<Tile>> valueY = new ArrayList<>();
     private GameLogic gameLogic;
     private ResetButton resetButton;
-    private ResizeGameSlider resizeGameSlider;
-    private MyKeyAdapter myKeyAdapter;
+    private ResizeGameComboBox resizeGameComboBox;
+//    private MyKeyAdapter myKeyAdapter;
     private StoneCountText blackCount;
     private StoneCountText whiteCount;
-    private StoneCountText otherCount;
+    private int size = 6;
+
 
     public Game() throws HeadlessException {
         super();
-        gameCreate();
+        gameCreate(this.size);
     }
 
     private void startGame(Color me, Color enemy) {
         gameLogic.createPossiblePlacements(me, enemy, true, true);
     }
 
-    private void gameCreate() {
+    private void gameCreate(int size) {
+
+
         createFrame();
         addImageIcon();
         addingListeners();
-        int size = createObjects();
+        createObjects(size);
         startGame(Color.BLACK, Color.WHITE);
         this.setVisible(true);
 
@@ -62,32 +67,30 @@ public class Game extends JFrame {
     public void createCounters(){
         blackCount = new StoneCountText("Black is:", 2);
         whiteCount = new StoneCountText("White is:", 2);
-        otherCount = new StoneCountText("Other is:", 0);
     }
 
-    public int createObjects(){
-        int size = 6;
+    public void createObjects(int size){
         Board board = new Board(Color.BLACK, 500, 500);
         Menu menu = new Menu(Color.LIGHT_GRAY, 500, 100);
         createCounters();
-        gameLogic = new GameLogic(valueY, blackCount, whiteCount, otherCount);
+        gameLogic = new GameLogic(valueY, blackCount, whiteCount);
         createBoardSize(size, 50, board, valueX, valueY);
         initialStones(size);
-        menu.add(resizeGameSlider);
+        menu.add(resizeGameComboBox);
         menu.add(resetButton);
         menu.add(blackCount);
         menu.add(whiteCount);
-        menu.add(otherCount);
         this.add(menu, BorderLayout.NORTH);
         this.add(board, BorderLayout.CENTER);
-        return size;
     }
 
     private void addingListeners(){
         this.resetButton = new ResetButton();
-        this.resizeGameSlider = new ResizeGameSlider(Adjustable.HORIZONTAL, 6, 12, 6);
-        this.myKeyAdapter = new MyKeyAdapter();
-        this.addKeyListener(myKeyAdapter);
+        String[] sizes = {"6x6","8x8","10x10","12x12"};
+        this.resizeGameComboBox = new ResizeGameComboBox(sizes, "name");
+        resizeGameComboBox.addActionListener(this);
+//        this.myKeyAdapter = new MyKeyAdapter();
+//        this.addKeyListener(myKeyAdapter);
     }
 
 
@@ -128,4 +131,47 @@ public class Game extends JFrame {
         }
     }
 
+    public void restartGame(int size){
+
+        gameCreate(size);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource()==this.resizeGameComboBox){
+            switch(resizeGameComboBox.getSelectedItem().toString()){
+                case "6x6":
+                    restartGame(6);
+                    break;
+                case "8x8":
+                    restartGame(8);
+                    break;
+                case "10x10":
+                    restartGame(10);
+                    break;
+                case "12x12":
+                    restartGame(12);
+                    break;
+            }
+            resizeGameComboBox.setFocusable(false);
+        }
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        if (e.getKeyChar() == 'r'){
+            restartGame(this.size);
+            System.out.println("lol");
+        }
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
+    }
 }
