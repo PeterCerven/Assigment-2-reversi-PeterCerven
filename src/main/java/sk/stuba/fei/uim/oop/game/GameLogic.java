@@ -3,23 +3,33 @@ package sk.stuba.fei.uim.oop.game;
 import lombok.Getter;
 import lombok.Setter;
 import sk.stuba.fei.uim.oop.game.board.Tile;
+import sk.stuba.fei.uim.oop.game.menu.MyJLabel;
 import sk.stuba.fei.uim.oop.game.menu.StoneCountText;
 
 
+import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+
+import static java.awt.Color.BLACK;
+import static java.awt.Color.WHITE;
+import static java.awt.SystemColor.menu;
+
 @Getter
 @Setter
 public class GameLogic {
     private ArrayList<ArrayList<Tile>> valueY;
     private StoneCountText blackCount;
     private StoneCountText whiteCount;
+    private Game game;
+    private MyJLabel myJLabel;
 
 
-    public GameLogic(ArrayList<ArrayList<Tile>> valueY , StoneCountText blackCount, StoneCountText whiteCount) {
+    public GameLogic(ArrayList<ArrayList<Tile>> valueY , StoneCountText blackCount, StoneCountText whiteCount, Game game) {
         this.valueY = valueY;
         this.blackCount = blackCount;
         this.whiteCount = whiteCount;
+        this.game = game;
 
     }
 
@@ -28,7 +38,7 @@ public class GameLogic {
             for (Tile tile : tiles) {
                 if (tile.isCanBeTaken()) {
                     tile.setCanBeTaken(false);
-                    tile.setBackground(tile.currentColor);
+                    tile.getStone().repaint(tile.currentColor);
                 }
             }
         }
@@ -64,10 +74,11 @@ public class GameLogic {
             }
             if (!whiteCheck && !blackCheck) {
                 if (getWhiteNumbers() > getBlackNumbers()){
-                    System.out.println("White won");
+                    game.getMyJLabel().showWinner( "White has won");
                 } else {
-                    System.out.println("Black won");
+                    game.getMyJLabel().showWinner( "Black has won");
                 }
+
             } else {
                 createPossiblePlacements(enemyColor, myColor, whiteCheck, blackCheck);
             }

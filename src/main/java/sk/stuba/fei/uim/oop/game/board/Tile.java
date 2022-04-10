@@ -32,11 +32,10 @@ public class Tile extends JPanel {
         this.toBeOwned = color;
         this.currentColor = color;
         this.setBackground(color);
-        this.setBounds(0, 0, size, size);
         this.valueY = valueY;
         this.xb = xb;
         this.yb = yb;
-        Stone stone = new Stone(size, size, Color.BLACK);
+        Stone stone = new Stone(size, size, currentColor);
         this.stone = stone;
         this.add(stone, BorderLayout.CENTER);
 
@@ -49,14 +48,14 @@ public class Tile extends JPanel {
     public void setTaken(Color color) {
         this.currentColor = color;
         this.taken = true;
-        this.setBackground(color);
         this.canBeTaken = false;
         this.toBeOwned = color;
+        this.stone.repaint(currentColor);
     }
 
     public void setCandidate(Color color) {
         this.canBeTaken = true;
-        this.setBackground(Color.GRAY);
+        this.stone.repaint(Color.GRAY);
         this.toBeOwned = color;
     }
 

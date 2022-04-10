@@ -38,14 +38,14 @@ public class MyMouseAdapter extends MouseAdapter {
     @Override
     public void mouseEntered(MouseEvent e) {
         if(tile.isCanBeTaken() && tile.getToBeOwned().equals(Color.BLACK)){
-            tile.setBackground(Color.DARK_GRAY);
+            tile.getStone().repaint(tile.getToBeOwned());
         }
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
         if(tile.isCanBeTaken()){
-            tile.setBackground(Color.GRAY);
+            tile.getStone().repaint(Color.GRAY);
         }
     }
 }

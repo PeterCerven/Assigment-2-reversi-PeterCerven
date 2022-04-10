@@ -3,11 +3,9 @@ package sk.stuba.fei.uim.oop.game;
 import lombok.Getter;
 import sk.stuba.fei.uim.oop.game.board.Board;
 import sk.stuba.fei.uim.oop.game.board.Stone;
-import sk.stuba.fei.uim.oop.game.menu.Menu;
+import sk.stuba.fei.uim.oop.game.menu.*;
 import sk.stuba.fei.uim.oop.game.board.Tile;
-import sk.stuba.fei.uim.oop.game.menu.ResetButton;
-import sk.stuba.fei.uim.oop.game.menu.ResizeGameComboBox;
-import sk.stuba.fei.uim.oop.game.menu.StoneCountText;
+import sk.stuba.fei.uim.oop.game.menu.Menu;
 import sk.stuba.fei.uim.oop.utility.MyKeyAdapter;
 
 import javax.imageio.ImageIO;
@@ -34,7 +32,8 @@ public class Game extends JFrame implements ActionListener {
     private StoneCountText whiteCount;
     private int currentSize = 6;
     private Board board;
-    private Menu menu;
+    public Menu menu;
+    private MyJLabel myJLabel;
 
 
     public Game() throws HeadlessException {
@@ -48,7 +47,9 @@ public class Game extends JFrame implements ActionListener {
         addingListeners();
         menu = new Menu(Color.LIGHT_GRAY, 500, 100);
         createCounters();
-        gameLogic = new GameLogic(valueY, blackCount, whiteCount);
+        gameLogic = new GameLogic(valueY, blackCount, whiteCount ,this);
+        this.myJLabel = new MyJLabel();
+        menu.add(myJLabel);
         menu.add(resizeGameComboBox);
         menu.add(resetButton);
         menu.add(blackCount);
@@ -104,11 +105,18 @@ public class Game extends JFrame implements ActionListener {
 
 
     private void createBoardSize(int number, Board board, ArrayList<Tile> valueX ,ArrayList<ArrayList<Tile>> valueY) {
+        Color green1 = new Color( 25, 70, 0);
+        Color green2 = new Color( 25, 140, 0);
+        Color current;
         board.setLayout(new GridLayout(number, number, 1, 1));
         for (int i = 0; i < number; i++) {
             for (int j = 0; j < number; j++) {
-                Tile tile = new Tile(new Color(((i + j) % 2) * 25, ((i + j) % 2 + 1) * 70, 0), 100, j, i, valueY, this.gameLogic);
-                board.add(tile);
+                if ((i + j) % 2 == 0){
+                    current = green1;
+                } else
+                    current = green2;
+                Tile tile = new Tile(current, 65, j, i, valueY, this.gameLogic);
+                this.board.add(tile);
                 valueX.add(tile);
             }
             ArrayList<Tile> shallowCopy = new ArrayList<>(valueX);
@@ -129,6 +137,7 @@ public class Game extends JFrame implements ActionListener {
     }
 
     public void restartGame(int size){
+        myJLabel.showWinner("");
         this.currentSize = size;
         this.remove(board);
         this.valueY.clear();
@@ -138,6 +147,7 @@ public class Game extends JFrame implements ActionListener {
         this.whiteCount.ChangeNumberStone(2, "White is:");
         gameLogic.createPossiblePlacements(Color.BLACK, Color.WHITE, true, true);
         this.setVisible(true);
+        this.pack();
     }
 
     @Override
