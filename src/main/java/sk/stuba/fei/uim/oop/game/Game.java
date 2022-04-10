@@ -2,6 +2,7 @@ package sk.stuba.fei.uim.oop.game;
 
 import lombok.Getter;
 import sk.stuba.fei.uim.oop.game.board.Board;
+import sk.stuba.fei.uim.oop.game.board.Stone;
 import sk.stuba.fei.uim.oop.game.menu.Menu;
 import sk.stuba.fei.uim.oop.game.board.Tile;
 import sk.stuba.fei.uim.oop.game.menu.ResetButton;
@@ -14,8 +15,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -43,11 +42,6 @@ public class Game extends JFrame implements ActionListener {
         gameCreate();
     }
 
-    private void startGame(Color me, Color enemy) {
-
-        gameLogic.createPossiblePlacements(me, enemy, true, true);
-    }
-
     private void gameCreate() {
         createFrame();
         addImageIcon();
@@ -61,8 +55,9 @@ public class Game extends JFrame implements ActionListener {
         menu.add(whiteCount);
         this.add(menu, BorderLayout.NORTH);
         createBoard(currentSize);
-        startGame(Color.BLACK, Color.WHITE);
+        gameLogic.createPossiblePlacements(Color.BLACK, Color.WHITE, true, true);
         this.setVisible(true);
+        this.pack();
 
     }
     private void createFrame(){
@@ -81,7 +76,7 @@ public class Game extends JFrame implements ActionListener {
 
     public void createBoard(int size){
         this.board = new Board(Color.BLACK, 500, 500);
-        createBoardSize(size, 50, board, valueX, valueY);
+        createBoardSize(size, board, valueX, valueY);
         initialStones(size);
         this.add(board, BorderLayout.CENTER);
     }
@@ -108,15 +103,15 @@ public class Game extends JFrame implements ActionListener {
     }
 
 
-    private void createBoardSize(int number, int size, Board board, ArrayList<Tile> valueX ,ArrayList<ArrayList<Tile>> valueY) {
+    private void createBoardSize(int number, Board board, ArrayList<Tile> valueX ,ArrayList<ArrayList<Tile>> valueY) {
         board.setLayout(new GridLayout(number, number, 1, 1));
         for (int i = 0; i < number; i++) {
             for (int j = 0; j < number; j++) {
-                Tile tile = new Tile(new Color(((i + j) % 2) * 25, ((i + j) % 2 + 1) * 70, 0), size, j, i, valueY, this.gameLogic);
+                Tile tile = new Tile(new Color(((i + j) % 2) * 25, ((i + j) % 2 + 1) * 70, 0), 100, j, i, valueY, this.gameLogic);
                 board.add(tile);
                 valueX.add(tile);
             }
-            ArrayList<Tile> shallowCopy = new ArrayList<Tile>(valueX);
+            ArrayList<Tile> shallowCopy = new ArrayList<>(valueX);
             valueY.add(shallowCopy);
             valueX.clear();
         }
@@ -141,14 +136,14 @@ public class Game extends JFrame implements ActionListener {
         createBoard(size);
         this.blackCount.ChangeNumberStone(2, "Black is:");
         this.whiteCount.ChangeNumberStone(2, "White is:");
-        startGame(Color.BLACK, Color.WHITE);
+        gameLogic.createPossiblePlacements(Color.BLACK, Color.WHITE, true, true);
         this.setVisible(true);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource()==this.resizeGameComboBox){
-            switch(resizeGameComboBox.getSelectedItem().toString()){
+            switch(Objects.requireNonNull(resizeGameComboBox.getSelectedItem()).toString()){
                 case "6x6":
                     restartGame(6);
                     break;

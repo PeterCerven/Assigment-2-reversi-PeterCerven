@@ -1,6 +1,5 @@
 package sk.stuba.fei.uim.oop.game;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import sk.stuba.fei.uim.oop.game.board.Tile;
@@ -168,10 +167,7 @@ public class GameLogic {
 
 
     public boolean isOnMap(int size, int x, int y){
-        if (x >= (size) || x < 0 || y >= size || y < 0){
-            return false;
-        }
-        return true;
+        return x < (size) && x >= 0 && y < size && y >= 0;
     }
 
     public void findOppositeColor(int yb, int xb, Color enemyColor, Color myColor) {

@@ -1,9 +1,7 @@
 package sk.stuba.fei.uim.oop.game.menu;
 
-import lombok.Data;
-
 import javax.swing.*;
-import java.awt.*;
+
 
 
 public class StoneCountText extends JLabel {
