@@ -7,13 +7,12 @@ import sk.stuba.fei.uim.oop.game.menu.MyJLabel;
 import sk.stuba.fei.uim.oop.game.menu.StoneCountText;
 
 
-import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Random;
 
 import static java.awt.Color.BLACK;
 import static java.awt.Color.WHITE;
-import static java.awt.SystemColor.menu;
 
 @Getter
 @Setter
@@ -43,7 +42,33 @@ public class GameLogic {
             }
         }
     }
-    public void createPossiblePlacements(Color myColor, Color enemyColor, boolean whiteCheck, boolean blackCheck) {
+
+    public void computerTurn(){
+        createPossiblePlacements(Color.WHITE, Color.BLACK, false);
+        ArrayList<Point> possiblePlaces = new ArrayList<>();
+        int counter = 0;
+        for(ArrayList<Tile> tiles: valueY){
+            for (Tile tile : tiles){
+                if (tile.isCanBeTaken() && tile.getToBeOwned().equals(WHITE)){
+                    possiblePlaces.add(new Point(tile.getXb(),tile.getYb()));
+                    counter++;
+                }
+            }
+        }
+        if (counter == 0){
+            return;
+        }
+        Random random = new Random();
+        int chosenNum = random.nextInt(counter);
+        int column = possiblePlaces.get(chosenNum).y;
+        int row = possiblePlaces.get(chosenNum).x;
+        valueY.get(column).get(row).setTaken(valueY.get(column).get(row).getToBeOwned());
+        clearPossiblePlacements();
+        findOppositeColor(column, row, Color.BLACK, Color.WHITE);
+        createPossiblePlacements(Color.BLACK, Color.WHITE, false);
+    }
+
+    public void createPossiblePlacements(Color myColor, Color enemyColor, boolean checkBoth) {
         ArrayList<Point> neighbours = new ArrayList<>();
         boolean check = false;
         for (int i = 0; i < valueY.size(); i++) {
@@ -52,12 +77,6 @@ public class GameLogic {
                     neighbours = findNeighbours(i, j, myColor, enemyColor);
                     if (!neighbours.isEmpty()) {
                         check = true;
-                        if (myColor.equals(Color.WHITE)) {
-                            whiteCheck = true;
-                        }
-                        if (myColor.equals(Color.BLACK)) {
-                            blackCheck = true;
-                        }
                         for (Point points : neighbours) {
                             valueY.get(points.y).get(points.x).setCandidate(myColor);
                         }
@@ -65,22 +84,21 @@ public class GameLogic {
                 }
             }
         }
-        if (!check) {
-            if (myColor.equals(Color.WHITE)) {
-                whiteCheck = false;
-            }
-            if (myColor.equals(Color.BLACK)) {
-                blackCheck = false;
-            }
-            if (!whiteCheck && !blackCheck) {
-                if (getWhiteNumbers() > getBlackNumbers()){
+        if (checkBoth && !check){
+            if (getWhiteNumbers() > getBlackNumbers()){
                     game.getMyJLabel().showWinner( "White has won");
                 } else {
                     game.getMyJLabel().showWinner( "Black has won");
                 }
+            check = true;
+        }
 
-            } else {
-                createPossiblePlacements(enemyColor, myColor, whiteCheck, blackCheck);
+        if (!check) {
+            if (myColor.equals(BLACK)){
+                computerTurn();
+            }
+            if (myColor.equals(WHITE)){
+                createPossiblePlacements(BLACK, WHITE, true);
             }
         }
     }

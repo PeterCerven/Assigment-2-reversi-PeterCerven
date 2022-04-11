@@ -1,7 +1,6 @@
 package sk.stuba.fei.uim.oop.game.menu;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class MyJLabel extends JLabel {
     public MyJLabel() {

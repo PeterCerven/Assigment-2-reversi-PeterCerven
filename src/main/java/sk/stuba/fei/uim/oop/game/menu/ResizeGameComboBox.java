@@ -1,12 +1,15 @@
 package sk.stuba.fei.uim.oop.game.menu;
 
+import sk.stuba.fei.uim.oop.game.Game;
+import sk.stuba.fei.uim.oop.utility.MyComboBox;
+
 import javax.swing.*;
 
 public class ResizeGameComboBox extends JComboBox<String> {
-        private String items;
 
-    public ResizeGameComboBox(String[] items, String items1) {
+    public ResizeGameComboBox(String[] items, Game game) {
         super(items);
-        this.items = items1;
+        MyComboBox myComboBox = new MyComboBox(this, game);
+        this.addActionListener(myComboBox);
     }
 }

@@ -40,7 +40,7 @@ public class Tile extends JPanel {
         this.add(stone, BorderLayout.CENTER);
 
 
-        myMouseAdapter = new MyMouseAdapter( this , valueY, gameLogic);
+        myMouseAdapter = new MyMouseAdapter( this , gameLogic);
         this.addMouseListener(myMouseAdapter);
     }
 

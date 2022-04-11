@@ -2,7 +2,6 @@ package sk.stuba.fei.uim.oop.game;
 
 import lombok.Getter;
 import sk.stuba.fei.uim.oop.game.board.Board;
-import sk.stuba.fei.uim.oop.game.board.Stone;
 import sk.stuba.fei.uim.oop.game.menu.*;
 import sk.stuba.fei.uim.oop.game.board.Tile;
 import sk.stuba.fei.uim.oop.game.menu.Menu;
@@ -11,8 +10,6 @@ import sk.stuba.fei.uim.oop.utility.MyKeyAdapter;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,10 +17,10 @@ import java.util.Objects;
 
 
 @Getter
-public class Game extends JFrame implements ActionListener {
+public class Game extends JFrame {
 
-    private ArrayList<Tile> valueX = new ArrayList<>();
-    private ArrayList<ArrayList<Tile>> valueY = new ArrayList<>();
+    private final ArrayList<Tile> valueX = new ArrayList<>();
+    private final ArrayList<ArrayList<Tile>> valueY = new ArrayList<>();
     private GameLogic gameLogic;
     private ResetButton resetButton;
     private ResizeGameComboBox resizeGameComboBox;
@@ -56,7 +53,7 @@ public class Game extends JFrame implements ActionListener {
         menu.add(whiteCount);
         this.add(menu, BorderLayout.NORTH);
         createBoard(currentSize);
-        gameLogic.createPossiblePlacements(Color.BLACK, Color.WHITE, true, true);
+        gameLogic.createPossiblePlacements(Color.BLACK, Color.WHITE, false);
         this.setVisible(true);
         this.pack();
 
@@ -85,8 +82,7 @@ public class Game extends JFrame implements ActionListener {
     private void addingListeners(){
         this.resetButton = new ResetButton(this);
         String[] sizes = {"6x6","8x8","10x10","12x12"};
-        this.resizeGameComboBox = new ResizeGameComboBox(sizes, "name");
-        this.resizeGameComboBox.addActionListener(this);
+        this.resizeGameComboBox = new ResizeGameComboBox(sizes,  this);
         this.myKeyAdapter = new MyKeyAdapter(this);
         this.addKeyListener(myKeyAdapter);
         this.setFocusable(true);
@@ -145,30 +141,11 @@ public class Game extends JFrame implements ActionListener {
         createBoard(size);
         this.blackCount.ChangeNumberStone(2, "Black is:");
         this.whiteCount.ChangeNumberStone(2, "White is:");
-        gameLogic.createPossiblePlacements(Color.BLACK, Color.WHITE, true, true);
+        gameLogic.createPossiblePlacements(Color.BLACK, Color.WHITE, false);
         this.setVisible(true);
         this.pack();
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource()==this.resizeGameComboBox){
-            switch(Objects.requireNonNull(resizeGameComboBox.getSelectedItem()).toString()){
-                case "6x6":
-                    restartGame(6);
-                    break;
-                case "8x8":
-                    restartGame(8);
-                    break;
-                case "10x10":
-                    restartGame(10);
-                    break;
-                case "12x12":
-                    restartGame(12);
-                    break;
-            }
-            resizeGameComboBox.setFocusable(false);
-        }
-    }
+
 
 }
