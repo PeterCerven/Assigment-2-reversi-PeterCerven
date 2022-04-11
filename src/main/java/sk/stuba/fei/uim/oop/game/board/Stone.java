@@ -14,7 +14,6 @@ public class Stone extends JPanel {
         this.width = width;
         this.height = height;
         this.color = color;
-        this.setVisible(true);
         this.setPreferredSize(new Dimension(this.width,this.height));
         this.setOpaque(false);
     }

@@ -9,8 +9,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class MyMouseAdapter extends MouseAdapter {
-    private Tile tile;
-    private GameLogic gameLogic;
+    private final Tile tile;
+    private final GameLogic gameLogic;
 
 
 
@@ -26,7 +26,7 @@ public class MyMouseAdapter extends MouseAdapter {
         if(tile.isCanBeTaken() && tile.getToBeOwned().equals(Color.BLACK)){
             tile.setTaken(tile.getToBeOwned());
             gameLogic.clearPossiblePlacements();
-            gameLogic.findOppositeColor(tile.getYb(), tile.getXb(), Color.WHITE, Color.BLACK);
+            gameLogic.replaceStones(tile.getYb(), tile.getXb(), Color.WHITE, Color.BLACK);
             gameLogic.computerTurn();
         }
     }

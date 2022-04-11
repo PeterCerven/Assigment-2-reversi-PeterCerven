@@ -5,7 +5,6 @@ import javax.swing.*;
 public class MyJLabel extends JLabel {
     public MyJLabel() {
         this.setSize(50,50);
-        this.setVisible(true);
     }
 
 

@@ -64,7 +64,7 @@ public class GameLogic {
         int row = possiblePlaces.get(chosenNum).x;
         valueY.get(column).get(row).setTaken(valueY.get(column).get(row).getToBeOwned());
         clearPossiblePlacements();
-        findOppositeColor(column, row, Color.BLACK, Color.WHITE);
+        replaceStones(column, row, Color.BLACK, Color.WHITE);
         createPossiblePlacements(Color.BLACK, Color.WHITE, false);
     }
 
@@ -167,6 +167,7 @@ public class GameLogic {
         return grey;
     }
 
+
     public int getWhiteNumbers(){
         int count = 0;
         for (ArrayList<Tile> tiles : valueY) {
@@ -199,7 +200,7 @@ public class GameLogic {
         return x < (size) && x >= 0 && y < size && y >= 0;
     }
 
-    public void findOppositeColor(int yb, int xb, Color enemyColor, Color myColor) {
+    public void replaceStones(int yb, int xb, Color enemyColor, Color myColor) {
         int a;
         int b;
         for (int rows = -1; rows <= 1; rows++) {

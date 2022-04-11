@@ -5,7 +5,7 @@ import java.awt.event.KeyEvent;
 import sk.stuba.fei.uim.oop.game.Game;
 
 public class MyKeyAdapter extends KeyAdapter {
-    Game game;
+    private final Game game;
     public MyKeyAdapter(Game game) {
         this.game = game;
     }

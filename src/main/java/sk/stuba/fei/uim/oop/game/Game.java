@@ -54,8 +54,8 @@ public class Game extends JFrame {
         this.add(menu, BorderLayout.NORTH);
         createBoard(currentSize);
         gameLogic.createPossiblePlacements(Color.BLACK, Color.WHITE, false);
-        this.setVisible(true);
         this.pack();
+        this.setVisible(true);
 
     }
     private void createFrame(){
@@ -111,7 +111,7 @@ public class Game extends JFrame {
                     current = green1;
                 } else
                     current = green2;
-                Tile tile = new Tile(current, 65, j, i, valueY, this.gameLogic);
+                Tile tile = new Tile(current, 500/number, j, i, valueY, this.gameLogic);
                 this.board.add(tile);
                 valueX.add(tile);
             }
@@ -142,8 +142,8 @@ public class Game extends JFrame {
         this.blackCount.ChangeNumberStone(2, "Black is:");
         this.whiteCount.ChangeNumberStone(2, "White is:");
         gameLogic.createPossiblePlacements(Color.BLACK, Color.WHITE, false);
-        this.setVisible(true);
         this.pack();
+        this.setVisible(true);
     }
 
 

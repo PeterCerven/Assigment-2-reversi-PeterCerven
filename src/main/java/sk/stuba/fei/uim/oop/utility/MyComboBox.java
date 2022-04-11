@@ -8,8 +8,8 @@ import java.awt.event.ActionListener;
 import java.util.Objects;
 
 public class MyComboBox implements ActionListener {
-    private ResizeGameComboBox resizeGameComboBox;
-    private Game game;
+    private final ResizeGameComboBox resizeGameComboBox;
+    private final Game game;
 
     public MyComboBox(ResizeGameComboBox resizeGameComboBox, Game game) {
         this.resizeGameComboBox = resizeGameComboBox;

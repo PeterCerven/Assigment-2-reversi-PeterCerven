@@ -6,7 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class ResetGame implements ActionListener {
-    private Game game;
+    private final Game game;
     public ResetGame(Game game) {
         this.game = game;
     }

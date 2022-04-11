@@ -37,7 +37,7 @@ public class Tile extends JPanel {
         this.yb = yb;
         Stone stone = new Stone(size, size, currentColor);
         this.stone = stone;
-        this.add(stone, BorderLayout.CENTER);
+        this.add(stone);
 
 
         myMouseAdapter = new MyMouseAdapter( this , gameLogic);
