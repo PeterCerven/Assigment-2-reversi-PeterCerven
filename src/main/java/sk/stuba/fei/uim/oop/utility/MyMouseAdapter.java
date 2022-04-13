@@ -22,7 +22,7 @@ public class MyMouseAdapter extends MouseAdapter {
 
 
     @Override
-    public void mouseClicked(MouseEvent e) {
+    public void mousePressed(MouseEvent e) {
         if(tile.isCanBeTaken() && tile.getToBeOwned().equals(Color.BLACK)){
             tile.setTaken(tile.getToBeOwned());
             gameLogic.clearPossiblePlacements();

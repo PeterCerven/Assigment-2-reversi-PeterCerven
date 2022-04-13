@@ -21,7 +21,7 @@ public class Stone extends JPanel {
 
     public void repaint(Color color){
         this.setColor(color);
-        validate();
+        revalidate();
         repaint();
     }
 
