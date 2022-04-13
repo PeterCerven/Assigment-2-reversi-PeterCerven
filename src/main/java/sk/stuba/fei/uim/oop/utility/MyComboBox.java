@@ -22,7 +22,7 @@ public class MyComboBox implements ItemListener {
     @Override
     public void itemStateChanged(ItemEvent e) {
         if (e.getSource() instanceof JComboBox){
-            int size = Integer.parseInt(String.valueOf(e.getItem()));
+            int size = (int) e.getItem();
             game.restartGame(size);
             resizeGameComboBox.setFocusable(false);
         }

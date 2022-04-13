@@ -92,7 +92,7 @@ public class Game extends JFrame {
 
     private void addingListeners(){
         this.resetButton = new ResetButton(this);
-        String[] sizes = {"6","8","10","12"};
+        Integer[] sizes = {6,8,10,12};
         this.resizeGameComboBox = new ResizeGameComboBox(sizes,  this);
         this.myKeyAdapter = new MyKeyAdapter(this);
         this.addKeyListener(myKeyAdapter);
