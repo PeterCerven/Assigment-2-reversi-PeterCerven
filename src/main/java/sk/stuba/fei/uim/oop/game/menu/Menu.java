@@ -12,6 +12,5 @@ public class Menu extends MyPanel {
         this.setPreferredSize(new Dimension(width,height));
         JLabel playerTurn = new JLabel("This is Black's player turn!");
         this.add(playerTurn);
-        playerTurn.setLocation(50, height -10);
     }
 }

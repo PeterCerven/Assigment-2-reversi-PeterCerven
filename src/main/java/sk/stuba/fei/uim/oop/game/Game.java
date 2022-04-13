@@ -30,7 +30,8 @@ public class Game extends JFrame {
     private int currentSize = 6;
     private Board board;
     public Menu menu;
-    private MyJLabel myJLabel;
+    private MyJLabel labelWinner;
+    private MyJLabel labelSize;
 
 
     public Game() throws HeadlessException {
@@ -42,22 +43,31 @@ public class Game extends JFrame {
         createFrame();
         addImageIcon();
         addingListeners();
-        menu = new Menu(Color.LIGHT_GRAY, 500, 100);
-        createCounters();
+        createMenu();
         gameLogic = new GameLogic(valueY, blackCount, whiteCount ,this);
-        this.myJLabel = new MyJLabel();
-        menu.add(myJLabel);
-        menu.add(resizeGameComboBox);
-        menu.add(resetButton);
-        menu.add(blackCount);
-        menu.add(whiteCount);
-        this.add(menu, BorderLayout.NORTH);
         createBoard(currentSize);
         gameLogic.createPossiblePlacements(Color.BLACK, Color.WHITE, false);
         this.pack();
         this.setVisible(true);
-
     }
+
+
+    private void createMenu(){
+        menu = new Menu(Color.LIGHT_GRAY, 500, 100);
+        labelWinner = new MyJLabel("");
+        labelSize = new MyJLabel("Current size is: ");
+        labelSize.showSize(currentSize);
+        menu.add(labelSize);
+        menu.add(labelWinner);
+        menu.add(resizeGameComboBox);
+        menu.add(resetButton);
+        createCounters();
+        menu.add(blackCount);
+        menu.add(whiteCount);
+        this.add(menu, BorderLayout.NORTH);
+    }
+
+
     private void createFrame(){
         this.setTitle("Reversi");
         this.setSize(600, 600);
@@ -81,7 +91,7 @@ public class Game extends JFrame {
 
     private void addingListeners(){
         this.resetButton = new ResetButton(this);
-        String[] sizes = {"6x6","8x8","10x10","12x12"};
+        String[] sizes = {"6","8","10","12"};
         this.resizeGameComboBox = new ResizeGameComboBox(sizes,  this);
         this.myKeyAdapter = new MyKeyAdapter(this);
         this.addKeyListener(myKeyAdapter);
@@ -133,7 +143,7 @@ public class Game extends JFrame {
     }
 
     public void restartGame(int size){
-        myJLabel.showWinner("");
+        labelWinner.showWinner("");
         this.currentSize = size;
         this.remove(board);
         this.valueY.clear();
@@ -141,11 +151,17 @@ public class Game extends JFrame {
         createBoard(size);
         this.blackCount.ChangeNumberStone(2, "Black is:");
         this.whiteCount.ChangeNumberStone(2, "White is:");
+        labelSize.showSize(currentSize);
         gameLogic.createPossiblePlacements(Color.BLACK, Color.WHITE, false);
         this.pack();
         this.setVisible(true);
     }
 
+    public void gameClose(){
+        this.dispose();
+        this.setVisible(false);
+        System.exit(0);
+    }
 
 
 }

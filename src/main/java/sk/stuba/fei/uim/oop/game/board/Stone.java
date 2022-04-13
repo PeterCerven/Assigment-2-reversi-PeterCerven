@@ -20,7 +20,6 @@ public class Stone extends JPanel {
 
     public void repaint(Color color){
         this.setColor(color);
-        removeAll();
         validate();
         repaint();
     }
@@ -28,6 +27,7 @@ public class Stone extends JPanel {
 
     @Override
     public void paint(Graphics g) {
+        super.paint(g);
         Graphics2D g2D = (Graphics2D) g;
         g2D.setPaint(this.color);
         g2D.setStroke(new BasicStroke(5));

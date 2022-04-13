@@ -11,9 +11,12 @@ public class MyKeyAdapter extends KeyAdapter {
     }
 
     @Override
-    public void keyTyped(KeyEvent e) {
+    public void keyPressed(KeyEvent e) {
         if (e.getKeyChar() == 'r'){
             game.restartGame(game.getCurrentSize());
+        }
+        if (e.getKeyCode() == 27){
+            game.gameClose();
         }
     }
 }

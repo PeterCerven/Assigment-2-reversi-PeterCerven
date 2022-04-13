@@ -3,9 +3,9 @@ package sk.stuba.fei.uim.oop.utility;
 import sk.stuba.fei.uim.oop.game.Game;
 import sk.stuba.fei.uim.oop.game.menu.ResizeGameComboBox;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Objects;
 
 public class MyComboBox implements ActionListener {
     private final ResizeGameComboBox resizeGameComboBox;
@@ -18,21 +18,9 @@ public class MyComboBox implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource()==this.resizeGameComboBox){
-            switch(Objects.requireNonNull(resizeGameComboBox.getSelectedItem()).toString()){
-                case "6x6":
-                    game.restartGame(6);
-                    break;
-                case "8x8":
-                    game.restartGame(8);
-                    break;
-                case "10x10":
-                    game.restartGame(10);
-                    break;
-                case "12x12":
-                    game.restartGame(12);
-                    break;
-            }
+        if (e.getSource() instanceof JComboBox){
+            int size = Integer.parseInt(String.valueOf(((JComboBox<String>) e.getSource()).getSelectedItem()));
+            game.restartGame(size);
             resizeGameComboBox.setFocusable(false);
         }
     }
