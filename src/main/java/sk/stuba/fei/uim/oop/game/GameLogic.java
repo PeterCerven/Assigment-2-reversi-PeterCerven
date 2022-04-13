@@ -9,7 +9,6 @@ import sk.stuba.fei.uim.oop.game.menu.StoneCountText;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Random;
 
 import static java.awt.Color.BLACK;
 import static java.awt.Color.WHITE;
@@ -69,9 +68,7 @@ public class GameLogic {
                     }
                 }
                 if (valueY.get(tempColumn + y).get(tempRow + x).getCurrentColor().equals(WHITE)){
-                    if (counter > max){
-                        max = counter;
-                    }
+                    max += counter;
                 }
             }
         }
@@ -79,7 +76,6 @@ public class GameLogic {
     }
 
     private Point chooseBest(){
-        ArrayList<Tile> possiblePlaces = new ArrayList<>();
         Point best = new Point();
         int count = 0;
         int max = 0;
@@ -106,23 +102,6 @@ public class GameLogic {
 
     public void computerTurn(){
         createPossiblePlacements(WHITE, BLACK, false);
-//        ArrayList<Point> possiblePlaces = new ArrayList<>();
-//        int counter = 0;
-//        for(ArrayList<Tile> tiles: valueY){
-//            for (Tile tile : tiles){
-//                if (tile.isCanBeTaken() && tile.getToBeOwned().equals(WHITE)){
-//                    possiblePlaces.add(new Point(tile.getXb(),tile.getYb()));
-//                    counter++;
-//                }
-//            }
-//        }
-//        if (counter == 0){
-//            return;
-//        }
-//        Random random = new Random();
-//        int chosenNum = random.nextInt(counter);
-//        int column = possiblePlaces.get(chosenNum).y;
-//        int row = possiblePlaces.get(chosenNum).x;
         Point best = chooseBest();
         if (best == null){
             return;

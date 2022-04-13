@@ -8,7 +8,7 @@ import java.awt.*;
 
 
 public class ResetButton extends JButton{
-    private ResetGame resetGame;
+    private final ResetGame resetGame;
 
     public ResetButton(Game game) {
         super();

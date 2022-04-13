@@ -79,8 +79,8 @@ public class Game extends JFrame {
     }
 
     public void createCounters(){
-        this.blackCount = new StoneCountText("Black is:", 2);
-        this.whiteCount = new StoneCountText("White is:", 2);
+        this.blackCount = new StoneCountText("Black:", 2);
+        this.whiteCount = new StoneCountText("White:", 2);
     }
 
     public void createBoard(int size){
@@ -150,8 +150,8 @@ public class Game extends JFrame {
         this.valueY.clear();
         this.valueX.clear();
         createBoard(size);
-        this.blackCount.ChangeNumberStone(2, "Black is:");
-        this.whiteCount.ChangeNumberStone(2, "White is:");
+        this.blackCount.ChangeNumberStone(2, "Black:");
+        this.whiteCount.ChangeNumberStone(2, "White:");
         labelSize.showSize(currentSize);
         gameLogic.createPossiblePlacements(Color.BLACK, Color.WHITE, false);
         this.pack();
