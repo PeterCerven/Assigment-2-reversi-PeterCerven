@@ -8,6 +8,7 @@ public class MyPanel extends JPanel {
     protected int x;
     protected int y;
     public MyPanel(Color color, int x, int y) {
+        super();
         this.color = color;
         this.x = x;
         this.y = y;

@@ -3,9 +3,8 @@ package sk.stuba.fei.uim.oop.game.menu;
 import javax.swing.*;
 
 public class MyJLabel extends JLabel {
-    private String text;
+    private final String text;
     public MyJLabel(String text) {
-        this.setSize(50, 50);
         this.text = text;
     }
 

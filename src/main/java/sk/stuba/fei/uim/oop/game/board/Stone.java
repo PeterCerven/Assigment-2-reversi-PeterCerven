@@ -11,6 +11,7 @@ public class Stone extends JPanel {
     private Color color;
 
     public Stone(int width, int height, Color color) {
+        super();
         this.width = width;
         this.height = height;
         this.color = color;

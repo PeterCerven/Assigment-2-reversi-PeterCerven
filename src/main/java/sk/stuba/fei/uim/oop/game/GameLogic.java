@@ -43,28 +43,93 @@ public class GameLogic {
         }
     }
 
-    public void computerTurn(){
-        createPossiblePlacements(WHITE, BLACK, false);
-        ArrayList<Point> possiblePlaces = new ArrayList<>();
-        int counter = 0;
-        for(ArrayList<Tile> tiles: valueY){
-            for (Tile tile : tiles){
-                if (tile.isCanBeTaken() && tile.getToBeOwned().equals(WHITE)){
-                    possiblePlaces.add(new Point(tile.getXb(),tile.getYb()));
+    private int countEnemyTiles(int x, int y){
+        int tempRow;
+        int tempColumn;
+        int counter;
+        int max = 0;
+        for (int rows = -1; rows <= 1; rows++) {
+            INNER:
+            for (int columns = -1; columns <= 1; columns++) {
+                counter = 0;
+                tempRow = rows;
+                tempColumn = columns;
+                if (tempRow == 0 && tempColumn == 0) {
+                    continue;
+                }
+                if (!isOnMap(valueY.size(), tempRow + x, tempColumn + y)) {
+                    continue;
+                }
+                while (valueY.get(tempColumn + y).get(tempRow + x).getCurrentColor().equals(BLACK)){
+                    tempRow += rows;
+                    tempColumn += columns;
                     counter++;
+                    if (!isOnMap(valueY.size(), tempRow + x, tempColumn + y)){
+                        continue INNER;
+                    }
+                }
+                if (valueY.get(tempColumn + y).get(tempRow + x).getCurrentColor().equals(WHITE)){
+                    if (counter > max){
+                        max = counter;
+                    }
                 }
             }
         }
-        if (counter == 0){
+        return max;
+    }
+
+    private Point chooseBest(){
+        ArrayList<Tile> possiblePlaces = new ArrayList<>();
+        Point best = new Point();
+        int count = 0;
+        int max = 0;
+        boolean exist = false;
+        for(ArrayList<Tile> tiles: valueY){
+            for (Tile tile : tiles){
+                if (tile.isCanBeTaken() && tile.getToBeOwned().equals(WHITE)){
+                    count = countEnemyTiles(tile.getXb(), tile.getYb());
+                    if (count > max) {
+                        exist = true;
+                        max = count;
+                        best.setLocation(tile.getXb(), tile.getYb());
+                    }
+                }
+            }
+        }
+        if (exist) {
+            return best;
+        }
+        return null;
+
+
+    }
+
+    public void computerTurn(){
+        createPossiblePlacements(WHITE, BLACK, false);
+//        ArrayList<Point> possiblePlaces = new ArrayList<>();
+//        int counter = 0;
+//        for(ArrayList<Tile> tiles: valueY){
+//            for (Tile tile : tiles){
+//                if (tile.isCanBeTaken() && tile.getToBeOwned().equals(WHITE)){
+//                    possiblePlaces.add(new Point(tile.getXb(),tile.getYb()));
+//                    counter++;
+//                }
+//            }
+//        }
+//        if (counter == 0){
+//            return;
+//        }
+//        Random random = new Random();
+//        int chosenNum = random.nextInt(counter);
+//        int column = possiblePlaces.get(chosenNum).y;
+//        int row = possiblePlaces.get(chosenNum).x;
+        Point best = chooseBest();
+        if (best == null){
             return;
         }
-        Random random = new Random();
-        int chosenNum = random.nextInt(counter);
-        int column = possiblePlaces.get(chosenNum).y;
-        int row = possiblePlaces.get(chosenNum).x;
-        valueY.get(column).get(row).setTaken(valueY.get(column).get(row).getToBeOwned());
+        valueY.get(best.y).get(best.x).setTaken(valueY.get(best.y).get(best.x).getToBeOwned());
         clearPossiblePlacements();
-        replaceStones(column, row, BLACK, WHITE);
+        replaceStones(best.y, best.x, BLACK, WHITE);
         createPossiblePlacements(BLACK, WHITE, false);
     }
 
@@ -73,8 +138,8 @@ public class GameLogic {
         boolean canPlayTurn = false;
         for (int i = 0; i < valueY.size(); i++) {
             for (int j = 0; j < valueY.get(i).size(); j++) {
-                if (valueY.get(i).get(j).getCurrentColor().equals(enemyColor)) {
-                    neighbours = findNeighbours(i, j, myColor, enemyColor);
+                if (valueY.get(i).get(j).getCurrentColor().equals(myColor)) {
+                    neighbours = findNeighbours(i, j, enemyColor);
                     if (!neighbours.isEmpty()) {
                         canPlayTurn = true;
                         for (Point points : neighbours) {
@@ -103,17 +168,15 @@ public class GameLogic {
         }
     }
 
-    public  ArrayList<Point> findNeighbours(int y, int x, Color myColor, Color enemyColor) {
-        int tempX;
-        int tempY;
+    public  ArrayList<Point> findNeighbours(int y, int x, Color enemyColor) {
+        boolean enemy;
         int tempRow;
         int tempColumn;
         ArrayList<Point> grey = new ArrayList<>();
         for (int rows = -1; rows <= 1; rows++) {
             INNER:
             for (int columns = -1; columns <= 1; columns++) {
-                tempX = rows;
-                tempY = columns;
+                enemy = false;
                 tempRow = rows;
                 tempColumn = columns;
                 if (tempRow == 0 && tempColumn == 0) {
@@ -122,46 +185,18 @@ public class GameLogic {
                 if (!isOnMap(valueY.size(), tempRow + x, tempColumn + y)) {
                     continue;
                 }
-                do {
-                    if (valueY.get(tempColumn + y).get(tempRow + x).getCurrentColor().equals(myColor)){
-                        tempRow -= tempX;
-                        tempColumn -= tempY;
-                        while(valueY.get(tempColumn + y).get(tempRow + x).getCurrentColor().equals(enemyColor)){
-                            tempRow -= tempX;
-                            tempColumn -= tempY;
-                            if (!isOnMap(valueY.size(), tempRow + x, tempColumn + y)){
-                                continue INNER;
-                            }
-                        }
-                        if (!(valueY.get(tempColumn + y).get(tempRow + x).isTaken()) ){
-                            grey.add(new Point(tempRow + x, tempColumn + y));
-                            continue INNER;
-                        }
-
-                    }
-                    if (!(valueY.get(tempColumn + y).get(tempRow + x).isTaken())){
-                        int candidateX = tempRow + x;
-                        int candidateY = tempColumn + y;
-                        tempRow -= tempX;
-                        tempColumn -= tempY;
-                        while(valueY.get(tempColumn + y).get(tempRow + x).getCurrentColor().equals(enemyColor)){
-                            tempRow -= tempX;
-                            tempColumn -= tempY;
-                            if (!isOnMap(valueY.size(), tempRow + x, tempColumn + y)){
-                                continue INNER;
-                            }
-                        }
-                        if (valueY.get(tempColumn + y).get(tempRow + x).getCurrentColor().equals(myColor)){
-                            grey.add(new Point(candidateX, candidateY));
-                            continue INNER;
-                        }
-                    }
-                    tempRow += tempX;
-                    tempColumn += tempY;
+                while (valueY.get(tempColumn + y).get(tempRow + x).getCurrentColor().equals(enemyColor)){
+                    tempRow += rows;
+                    tempColumn += columns;
+                    enemy = true;
                     if (!isOnMap(valueY.size(), tempRow + x, tempColumn + y)){
                         continue INNER;
                     }
-                } while (valueY.get(tempColumn + y).get(tempRow + x).getCurrentColor().equals(enemyColor));
+                }
+                if (!valueY.get(tempColumn + y).get(tempRow + x).isTaken() &&
+                        !valueY.get(tempColumn + y).get(tempRow + x).isCanBeTaken() && enemy){
+                    grey.add(new Point(tempRow + x, tempColumn + y));
+                }
             }
         }
         return grey;

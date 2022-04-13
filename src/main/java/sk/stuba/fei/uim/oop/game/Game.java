@@ -55,15 +55,16 @@ public class Game extends JFrame {
     private void createMenu(){
         menu = new Menu(Color.LIGHT_GRAY, 500, 100);
         labelWinner = new MyJLabel("");
-        labelSize = new MyJLabel("Current size is: ");
+        labelWinner.setFont(new Font("Comic Sans", Font.BOLD,25));
+        labelSize = new MyJLabel("Current size: ");
         labelSize.showSize(currentSize);
-        menu.add(labelSize);
-        menu.add(labelWinner);
-        menu.add(resizeGameComboBox);
         menu.add(resetButton);
+        menu.add(labelSize);
+        menu.add(resizeGameComboBox);
         createCounters();
         menu.add(blackCount);
         menu.add(whiteCount);
+        menu.add(labelWinner);
         this.add(menu, BorderLayout.NORTH);
     }
 

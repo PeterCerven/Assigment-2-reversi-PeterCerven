@@ -11,6 +11,7 @@ public class ResetButton extends JButton{
     private ResetGame resetGame;
 
     public ResetButton(Game game) {
+        super();
         this.setText("Reset");
         this.setBounds(200,300,100,50);
         this.setFocusable(false);
