@@ -4,6 +4,7 @@ import javax.swing.*;
 
 public class MyJLabel extends JLabel {
     private final String text;
+
     public MyJLabel(String text) {
         this.text = text;
     }

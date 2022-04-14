@@ -147,7 +147,7 @@ public class GameLogic {
         }
     }
 
-    public  ArrayList<Point> findNeighbours(int y, int x, Color enemyColor) {
+    private  ArrayList<Point> findNeighbours(int y, int x, Color enemyColor) {
         boolean enemy;
         int tempRow;
         int tempColumn;
@@ -200,7 +200,7 @@ public class GameLogic {
 
 
 
-    public boolean isOnMap(int size, int x, int y){
+    private boolean isOnMap(int size, int x, int y){
         return x < (size) && x >= 0 && y < size && y >= 0;
     }
 

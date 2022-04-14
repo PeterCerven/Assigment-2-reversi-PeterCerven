@@ -78,12 +78,12 @@ public class Game extends JFrame {
         this.addImageIcon();
     }
 
-    public void createCounters(){
+    private void createCounters(){
         this.blackCount = new StoneCountText("Black:", 2);
         this.whiteCount = new StoneCountText("White:", 2);
     }
 
-    public void createBoard(int size){
+    private void createBoard(int size){
         this.board = new Board(Color.BLACK, 500, 500);
         createBoardSize(size, board, valueX, valueY);
         initialStones(size);
