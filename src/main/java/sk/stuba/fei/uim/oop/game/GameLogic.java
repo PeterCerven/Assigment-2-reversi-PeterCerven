@@ -23,7 +23,7 @@ public class GameLogic {
     private MyJLabel myJLabel;
 
 
-    public GameLogic(ArrayList<ArrayList<Tile>> valueY , StoneCountText blackCount, StoneCountText whiteCount, Game game) {
+    public GameLogic(ArrayList<ArrayList<Tile>> valueY, StoneCountText blackCount, StoneCountText whiteCount, Game game) {
         this.valueY = valueY;
         this.blackCount = blackCount;
         this.whiteCount = whiteCount;
@@ -42,7 +42,7 @@ public class GameLogic {
         }
     }
 
-    private int countEnemyTiles(int x, int y){
+    private int countEnemyTilesToTake(int x, int y) {
         int tempRow;
         int tempColumn;
         int counter;
@@ -59,15 +59,15 @@ public class GameLogic {
                 if (!isOnMap(valueY.size(), tempRow + x, tempColumn + y)) {
                     continue;
                 }
-                while (valueY.get(tempColumn + y).get(tempRow + x).getCurrentColor().equals(BLACK)){
+                while (valueY.get(tempColumn + y).get(tempRow + x).getCurrentColor().equals(BLACK)) {
                     tempRow += rows;
                     tempColumn += columns;
                     counter++;
-                    if (!isOnMap(valueY.size(), tempRow + x, tempColumn + y)){
+                    if (!isOnMap(valueY.size(), tempRow + x, tempColumn + y)) {
                         continue INNER;
                     }
                 }
-                if (valueY.get(tempColumn + y).get(tempRow + x).getCurrentColor().equals(WHITE)){
+                if (valueY.get(tempColumn + y).get(tempRow + x).getCurrentColor().equals(WHITE)) {
                     max += counter;
                 }
             }
@@ -75,15 +75,15 @@ public class GameLogic {
         return max;
     }
 
-    private Point chooseBest(){
+    private Point chooseMostTilesToTake() {
         Point best = new Point();
         int count = 0;
         int max = 0;
         boolean exist = false;
-        for(ArrayList<Tile> tiles: valueY){
-            for (Tile tile : tiles){
-                if (tile.isCanBeTaken() && tile.getToBeOwned().equals(WHITE)){
-                    count = countEnemyTiles(tile.getXb(), tile.getYb());
+        for (ArrayList<Tile> tiles : valueY) {
+            for (Tile tile : tiles) {
+                if (tile.isCanBeTaken() && tile.getToBeOwned().equals(WHITE)) {
+                    count = countEnemyTilesToTake(tile.getXb(), tile.getYb());
                     if (count > max) {
                         exist = true;
                         max = count;
@@ -100,10 +100,10 @@ public class GameLogic {
 
     }
 
-    public void computerTurn(){
+    public void computerTurn() {
         createPossiblePlacements(WHITE, BLACK, false);
-        Point best = chooseBest();
-        if (best == null){
+        Point best = chooseMostTilesToTake();
+        if (best == null) {
             return;
         }
         valueY.get(best.y).get(best.x).setTaken(valueY.get(best.y).get(best.x).getToBeOwned());
@@ -118,7 +118,7 @@ public class GameLogic {
         for (int i = 0; i < valueY.size(); i++) {
             for (int j = 0; j < valueY.get(i).size(); j++) {
                 if (valueY.get(i).get(j).getCurrentColor().equals(myColor)) {
-                    neighbours = findNeighbours(i, j, enemyColor);
+                    neighbours = findPossiblePlacements(i, j, enemyColor);
                     if (!neighbours.isEmpty()) {
                         canPlayTurn = true;
                         for (Point points : neighbours) {
@@ -128,26 +128,26 @@ public class GameLogic {
                 }
             }
         }
-        if (checkEndGame && !canPlayTurn){
-            if (getNumStones(WHITE) > getNumStones(BLACK)){
-                    game.getLabelWinner().showWinner( "White has won");
-                } else {
-                    game.getLabelWinner().showWinner( "Black has won");
-                }
+        if (checkEndGame && !canPlayTurn) {
+            if (getNumStones(WHITE) > getNumStones(BLACK)) {
+                game.getLabelWinner().showWinner("White has won");
+            } else {
+                game.getLabelWinner().showWinner("Black has won");
+            }
             canPlayTurn = true;
         }
 
         if (!canPlayTurn) {
-            if (myColor.equals(BLACK)){
+            if (myColor.equals(BLACK)) {
                 computerTurn();
             }
-            if (myColor.equals(WHITE)){
+            if (myColor.equals(WHITE)) {
                 createPossiblePlacements(BLACK, WHITE, true);
             }
         }
     }
 
-    private  ArrayList<Point> findNeighbours(int y, int x, Color enemyColor) {
+    private ArrayList<Point> findPossiblePlacements(int y, int x, Color enemyColor) {
         boolean enemy;
         int tempRow;
         int tempColumn;
@@ -164,16 +164,16 @@ public class GameLogic {
                 if (!isOnMap(valueY.size(), tempRow + x, tempColumn + y)) {
                     continue;
                 }
-                while (valueY.get(tempColumn + y).get(tempRow + x).getCurrentColor().equals(enemyColor)){
+                while (valueY.get(tempColumn + y).get(tempRow + x).getCurrentColor().equals(enemyColor)) {
                     tempRow += rows;
                     tempColumn += columns;
                     enemy = true;
-                    if (!isOnMap(valueY.size(), tempRow + x, tempColumn + y)){
+                    if (!isOnMap(valueY.size(), tempRow + x, tempColumn + y)) {
                         continue INNER;
                     }
                 }
                 if (!valueY.get(tempColumn + y).get(tempRow + x).isTaken() &&
-                        !valueY.get(tempColumn + y).get(tempRow + x).isCanBeTaken() && enemy){
+                        !valueY.get(tempColumn + y).get(tempRow + x).isCanBeTaken() && enemy) {
                     grey.add(new Point(tempRow + x, tempColumn + y));
                 }
             }
@@ -182,13 +182,11 @@ public class GameLogic {
     }
 
 
-
-
-    private int getNumStones(Color color){
+    private int getNumStones(Color color) {
         int count = 0;
         for (ArrayList<Tile> tiles : valueY) {
-            for (Tile tile: tiles ) {
-                if (tile.isTaken() && tile.currentColor.equals(color)){
+            for (Tile tile : tiles) {
+                if (tile.isTaken() && tile.currentColor.equals(color)) {
                     count++;
                 }
             }
@@ -197,10 +195,7 @@ public class GameLogic {
     }
 
 
-
-
-
-    private boolean isOnMap(int size, int x, int y){
+    private boolean isOnMap(int size, int x, int y) {
         return x < (size) && x >= 0 && y < size && y >= 0;
     }
 
@@ -214,21 +209,21 @@ public class GameLogic {
                 if (rows == 0 && columns == 0) {
                     continue;
                 }
-                if (!isOnMap(valueY.size(),a + xb,b + yb)) {
+                if (!isOnMap(valueY.size(), a + xb, b + yb)) {
                     continue;
                 }
                 if (valueY.get(b + yb).get(a + xb).getCurrentColor().equals(enemyColor)) {
                     while (valueY.get(b + yb).get(a + xb).getCurrentColor().equals(enemyColor)) {
                         a += rows;
                         b += columns;
-                        if (!isOnMap(valueY.size(),a + xb,b + yb)) {
+                        if (!isOnMap(valueY.size(), a + xb, b + yb)) {
                             a -= rows;
                             b -= columns;
                             break;
                         }
                     }
                     if (valueY.get(b + yb).get(a + xb).getCurrentColor().equals(myColor)) {
-                        while (a != rows || b != columns){
+                        while (a != rows || b != columns) {
                             valueY.get(b + yb).get(a + xb).setTaken(myColor);
                             a -= rows;
                             b -= columns;
@@ -238,7 +233,7 @@ public class GameLogic {
                 }
             }
         }
-        blackCount.ChangeNumberStone(getNumStones(BLACK),"Black");
-        whiteCount.ChangeNumberStone(getNumStones(WHITE),"White");
+        blackCount.ChangeNumberStone(getNumStones(BLACK), "Black");
+        whiteCount.ChangeNumberStone(getNumStones(WHITE), "White");
     }
 }

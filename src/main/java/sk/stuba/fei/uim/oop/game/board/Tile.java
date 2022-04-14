@@ -1,7 +1,6 @@
 package sk.stuba.fei.uim.oop.game.board;
 
 
-
 import lombok.Getter;
 import lombok.Setter;
 import sk.stuba.fei.uim.oop.game.GameLogic;
@@ -40,7 +39,7 @@ public class Tile extends JPanel {
         this.add(stone);
 
 
-        myMouseAdapter = new MyMouseAdapter( this , gameLogic);
+        myMouseAdapter = new MyMouseAdapter(this, gameLogic);
         this.addMouseListener(myMouseAdapter);
     }
 

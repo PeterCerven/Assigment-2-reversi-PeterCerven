@@ -13,7 +13,6 @@ public class MyMouseAdapter extends MouseAdapter {
     private final GameLogic gameLogic;
 
 
-
     public MyMouseAdapter(Tile tile, GameLogic gameLogic) {
         this.tile = tile;
         this.gameLogic = gameLogic;
@@ -23,7 +22,7 @@ public class MyMouseAdapter extends MouseAdapter {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if(tile.isCanBeTaken() && tile.getToBeOwned().equals(Color.BLACK)){
+        if (tile.isCanBeTaken() && tile.getToBeOwned().equals(Color.BLACK)) {
             tile.setTaken(tile.getToBeOwned());
             gameLogic.clearPossiblePlacements();
             gameLogic.replaceStones(tile.getYb(), tile.getXb(), Color.WHITE, Color.BLACK);
@@ -33,14 +32,14 @@ public class MyMouseAdapter extends MouseAdapter {
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        if(tile.isCanBeTaken() && tile.getToBeOwned().equals(Color.BLACK)){
+        if (tile.isCanBeTaken() && tile.getToBeOwned().equals(Color.BLACK)) {
             tile.getStone().repaint(tile.getToBeOwned());
         }
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        if(tile.isCanBeTaken()){
+        if (tile.isCanBeTaken()) {
             tile.getStone().repaint(Color.GRAY);
         }
     }

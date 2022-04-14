@@ -7,18 +7,17 @@ import javax.swing.*;
 import java.awt.*;
 
 
-public class ResetButton extends JButton{
-    private final ResetGame resetGame;
+public class ResetButton extends JButton {
 
     public ResetButton(Game game) {
         super();
         this.setText("Reset");
-        this.setBounds(200,300,100,50);
+        this.setBounds(200, 300, 100, 50);
         this.setFocusable(false);
-        this.setFont(new Font("Comic Sans", Font.BOLD,25));
+        this.setFont(new Font("Comic Sans", Font.BOLD, 25));
         this.setForeground(Color.CYAN);
         this.setBackground(Color.BLACK);
-        this.resetGame = new ResetGame(game);
+        ResetGame resetGame = new ResetGame(game);
         this.addActionListener(resetGame);
     }
 

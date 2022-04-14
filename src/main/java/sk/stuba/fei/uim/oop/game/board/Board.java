@@ -1,9 +1,11 @@
 package sk.stuba.fei.uim.oop.game.board;
 
+import sk.stuba.fei.uim.oop.game.GeneralJPanel;
+
 import java.awt.*;
 
 
-public class Board extends MyPanel {
+public class Board extends GeneralJPanel {
     public Board(Color color, int width, int height) {
         super(color, width, height);
         this.setBackground(color);

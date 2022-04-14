@@ -3,7 +3,6 @@ package sk.stuba.fei.uim.oop.game.menu;
 import javax.swing.*;
 
 
-
 public class StoneCountText extends JLabel {
     private int countStone;
 
@@ -12,7 +11,7 @@ public class StoneCountText extends JLabel {
         this.countStone = countStone;
     }
 
-    public void ChangeNumberStone(int number, String color){
+    public void ChangeNumberStone(int number, String color) {
         this.countStone = number;
         this.setText(color + " is: " + this.countStone);
     }

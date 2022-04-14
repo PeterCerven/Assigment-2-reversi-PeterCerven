@@ -44,7 +44,7 @@ public class Game extends JFrame {
         addImageIcon();
         addingListeners();
         createMenu();
-        gameLogic = new GameLogic(valueY, blackCount, whiteCount ,this);
+        gameLogic = new GameLogic(valueY, blackCount, whiteCount, this);
         createBoard(currentSize);
         gameLogic.createPossiblePlacements(Color.BLACK, Color.WHITE, false);
         this.pack();
@@ -52,10 +52,10 @@ public class Game extends JFrame {
     }
 
 
-    private void createMenu(){
+    private void createMenu() {
         menu = new Menu(Color.LIGHT_GRAY, 500, 100);
         labelWinner = new MyJLabel("");
-        labelWinner.setFont(new Font("Comic Sans", Font.BOLD,25));
+        labelWinner.setFont(new Font("Comic Sans", Font.BOLD, 25));
         labelSize = new MyJLabel("Current size: ");
         labelSize.showSize(currentSize);
         menu.add(resetButton);
@@ -69,7 +69,7 @@ public class Game extends JFrame {
     }
 
 
-    private void createFrame(){
+    private void createFrame() {
         this.setTitle("Reversi");
         this.setSize(600, 600);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -78,22 +78,22 @@ public class Game extends JFrame {
         this.addImageIcon();
     }
 
-    private void createCounters(){
+    private void createCounters() {
         this.blackCount = new StoneCountText("Black:", 2);
         this.whiteCount = new StoneCountText("White:", 2);
     }
 
-    private void createBoard(int size){
+    private void createBoard(int size) {
         this.board = new Board(Color.BLACK, 500, 500);
         createBoardSize(size, board, valueX, valueY);
         initialStones(size);
         this.add(board, BorderLayout.CENTER);
     }
 
-    private void addingListeners(){
+    private void addingListeners() {
         this.resetButton = new ResetButton(this);
-        Integer[] sizes = {6,8,10,12};
-        this.resizeGameComboBox = new ResizeGameComboBox(sizes,  this);
+        Integer[] sizes = {6, 8, 10, 12};
+        this.resizeGameComboBox = new ResizeGameComboBox(sizes, this);
         this.myKeyAdapter = new MyKeyAdapter(this);
         this.addKeyListener(myKeyAdapter);
         this.setFocusable(true);
@@ -111,18 +111,18 @@ public class Game extends JFrame {
     }
 
 
-    private void createBoardSize(int number, Board board, ArrayList<Tile> valueX ,ArrayList<ArrayList<Tile>> valueY) {
-        Color green1 = new Color( 25, 70, 0);
-        Color green2 = new Color( 25, 140, 0);
+    private void createBoardSize(int number, Board board, ArrayList<Tile> valueX, ArrayList<ArrayList<Tile>> valueY) {
+        Color green1 = new Color(25, 70, 0);
+        Color green2 = new Color(25, 140, 0);
         Color current;
         board.setLayout(new GridLayout(number, number, 1, 1));
         for (int i = 0; i < number; i++) {
             for (int j = 0; j < number; j++) {
-                if ((i + j) % 2 == 0){
+                if ((i + j) % 2 == 0) {
                     current = green1;
                 } else
                     current = green2;
-                Tile tile = new Tile(current, 500/number, j, i, valueY, this.gameLogic);
+                Tile tile = new Tile(current, 500 / number, j, i, valueY, this.gameLogic);
                 this.board.add(tile);
                 valueX.add(tile);
             }
@@ -143,7 +143,7 @@ public class Game extends JFrame {
         }
     }
 
-    public void restartGame(int size){
+    public void restartGame(int size) {
         labelWinner.showWinner("");
         this.currentSize = size;
         this.remove(board);
@@ -158,7 +158,7 @@ public class Game extends JFrame {
         this.setVisible(true);
     }
 
-    public void gameClose(){
+    public void gameClose() {
         this.dispose();
         this.setVisible(false);
         System.exit(0);
