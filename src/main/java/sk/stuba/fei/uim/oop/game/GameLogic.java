@@ -131,8 +131,12 @@ public class GameLogic {
         if (checkEndGame && !canPlayTurn) {
             if (getNumStones(WHITE) > getNumStones(BLACK)) {
                 game.getLabelWinner().showWinner("White has won");
-            } else {
+            }
+            if (getNumStones(WHITE) < getNumStones(BLACK)) {
                 game.getLabelWinner().showWinner("Black has won");
+            }
+            if (getNumStones(WHITE) == getNumStones(BLACK)) {
+                game.getLabelWinner().showWinner("DRAW");
             }
             canPlayTurn = true;
         }
