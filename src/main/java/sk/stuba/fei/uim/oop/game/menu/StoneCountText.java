@@ -13,6 +13,6 @@ public class StoneCountText extends JLabel {
 
     public void ChangeNumberStone(int number, String color) {
         this.countStone = number;
-        this.setText(color + " is: " + this.countStone);
+        this.setText(color + ": " + this.countStone);
     }
 }

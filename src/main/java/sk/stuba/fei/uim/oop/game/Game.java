@@ -48,6 +48,7 @@ public class Game extends JFrame {
         createBoard(currentSize);
         gameLogic.createPossiblePlacements(Color.BLACK, Color.WHITE, false);
         this.pack();
+        this.setResizable(false);
         this.setVisible(true);
     }
 
