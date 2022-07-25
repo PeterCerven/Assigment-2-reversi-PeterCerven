@@ -14,10 +14,10 @@ public class MyKeyAdapter extends KeyAdapter {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if (e.getKeyChar() == 'r') {
+        if (e.getKeyChar() == KeyEvent.VK_R) {
             game.restartGame(game.getCurrentSize());
         }
-        if (e.getKeyCode() == 27) {
+        if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
             game.gameClose();
         }
     }

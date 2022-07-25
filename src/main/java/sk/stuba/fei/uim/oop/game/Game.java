@@ -19,8 +19,8 @@ import java.util.Objects;
 @Getter
 public class Game extends JFrame {
 
-    private final ArrayList<Tile> valueX = new ArrayList<>();
-    private final ArrayList<ArrayList<Tile>> valueY = new ArrayList<>();
+    private ArrayList<Tile> valueX;
+    private ArrayList<ArrayList<Tile>> valueY;
     private GameLogic gameLogic;
     private ResetButton resetButton;
     private ResizeGameComboBox resizeGameComboBox;
@@ -40,6 +40,8 @@ public class Game extends JFrame {
     }
 
     private void gameCreate() {
+        valueX = new ArrayList<>();
+        valueY = new ArrayList<>();
         createFrame();
         addImageIcon();
         addingListeners();
